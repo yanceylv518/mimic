@@ -40,6 +40,7 @@ npm run patch:ai -- --page page-002
 npm run optimize:ai -- --page page-002 --max-rounds 1 --note "页面应该左右结构，撑满页面"
 npm run iteration:accept -- --page page-002 --iteration 2
 npm run iteration:reject -- --page page-002 --iteration 2
+npm run studio:dev
 ```
 
 Then open:
@@ -88,6 +89,18 @@ npm run iteration:accept -- --page page-002 --iteration 2 --note "Accepted by hu
 npm run iteration:reject -- --page page-002 --iteration 2 --note "Rejected by human review"
 ```
 
+Open the local Studio:
+
+```bash
+npm run studio:dev
+```
+
+Then visit:
+
+```text
+http://127.0.0.1:5180/
+```
+
 ## What MVP1 Proves
 
 - A screenshot can be registered as a generated page task.
@@ -99,6 +112,7 @@ npm run iteration:reject -- --page page-002 --iteration 2 --note "Rejected by hu
 - A code model can apply one controlled TSX patch with `patch:ai`.
 - A workflow function can orchestrate one optimization round with `optimize:ai`.
 - Iteration results can be accepted or rejected with explicit decision records.
+- A local Studio can operate existing page tasks without manual command chaining.
 - The preview app builds and runs locally.
 
 ## Important Limitation
@@ -110,6 +124,8 @@ The current visual validation report is still a manual comparison aid. It captur
 AI patching is intentionally single-step. It applies one controlled TSX rewrite, then the developer should build and validate before running another iteration.
 
 Optimization workflows are recorded locally. Accept/reject commands now sync the chosen TSX and write `decision.json`.
+
+Studio currently works with existing page tasks only. Uploading a new screenshot from the UI is not implemented yet.
 
 ## Step 4B: Automatic Visual Analysis
 
@@ -137,6 +153,6 @@ PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 
 Before moving to MVP2, choose one of these:
 
-1. Start Step 6A: local Web UI for upload, preview, optimize, accept, reject, and history.
+1. Start Step 6B: upload screenshot and generate-page entry points in Studio.
 2. Improve the generation prompt for better dashboard spacing, table density, and sidebar fidelity.
 3. Start MVP2: real project export and reusable component extraction.

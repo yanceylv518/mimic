@@ -21,6 +21,7 @@
     "preview:build": "npm --prefix preview run build",
     "render": "node src/cli.mjs render",
     "render:ai": "node src/cli.mjs render:ai",
+    "studio:dev": "node src/server/studio-server.mjs",
     "validate:visual": "node scripts/visual-compare.mjs"
   },
   "engines": {

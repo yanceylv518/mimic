@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page Mimic Studio</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <aside class="sidebar">
+        <div>
+          <p class="eyebrow">Page Mimic</p>
+          <h1>页面生成工作台</h1>
+        </div>
+        <div class="field">
+          <label for="pageId">页面任务</label>
+          <select id="pageId"></select>
+        </div>
+        <button id="refreshButton" type="button">刷新状态</button>
+        <a class="preview-link" href="http://127.0.0.1:5174/" target="_blank" rel="noreferrer">打开预览页</a>
+      </aside>
+
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">当前任务</p>
+            <h2 id="pageTitle">加载中</h2>
+          </div>
+          <p id="statusPill" class="pill">unknown</p>
+        </header>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">优化操作</p>
+              <h3>继续优化</h3>
+            </div>
+          </div>
+          <textarea id="noteInput" rows="3" placeholder="例如：页面应该左右结构，撑满页面，不要居中"></textarea>
+          <div class="actions">
+            <button id="optimizeButton" type="button">运行一轮优化</button>
+            <p id="actionStatus"></p>
+          </div>
+        </section>
+
+        <section class="comparison">
+          <article class="panel">
+            <div class="panel-header">
+              <h3>原图</h3>
+            </div>
+            <img id="sourceImage" alt="原始截图" />
+          </article>
+          <article class="panel">
+            <div class="panel-header">
+              <h3>当前预览截图</h3>
+            </div>
+            <img id="generatedImage" alt="生成预览截图" />
+          </article>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">迭代记录</p>
+              <h3>选择 A / B / C</h3>
+            </div>
+          </div>
+          <div id="iterations" class="iterations"></div>
+        </section>
+      </section>
+    </main>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

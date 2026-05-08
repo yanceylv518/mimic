@@ -27,6 +27,7 @@
 | 5D | AI 页面补丁 | 已完成 | `patch:ai` 根据视觉反馈修正当前 TSX |
 | 5E | 优化工作流 | 已完成 | `optimize:ai` 编排验证、反馈、补丁、构建和迭代记录 |
 | 5F | 迭代接受 / 回退 | 已完成 | `iteration:accept` 与 `iteration:reject` |
+| 6A | 本地 Web UI 产品雏形 | 已完成 | `studio:dev` 提供页面、迭代和 A/B/C 操作界面 |
 | 6 | MVP1 交付文档 | 已完成 | 中英文交付说明 |
 
 ## 关键说明
@@ -122,6 +123,7 @@ npm run patch:ai -- --page page-002
 npm run optimize:ai -- --page page-002 --max-rounds 1 --note "页面应该左右结构，撑满页面"
 npm run iteration:accept -- --page page-002 --iteration 2
 npm run iteration:reject -- --page page-002 --iteration 2
+npm run studio:dev
 ```
 
 ## Step 5B：模型生成 TSX
@@ -310,6 +312,50 @@ B 继续优化 -> optimize:ai
 
 ## 下一步建议
 
-下一步建议进入 **Step 6A：本地 Web UI 产品雏形**。
+## Step 6A：本地 Web UI 产品雏形
 
-现在底层 workflow 已经能覆盖“生成、优化、接受、回退”。下一阶段可以把这些命令包装成页面按钮，而不是让最终用户接触命令行。
+运行：
+
+```bash
+npm run studio:dev
+```
+
+打开：
+
+```text
+http://127.0.0.1:5180/
+```
+
+当前 UI 能力：
+
+- 查看已有页面任务。
+- 打开当前预览页。
+- 查看原图和当前预览截图。
+- 查看迭代记录。
+- 对通过的迭代执行 A 接受、B 继续优化、C 回退。
+- 输入人工提示后运行一轮优化。
+
+当前后端接口：
+
+```text
+GET  /api/pages
+GET  /api/pages/:pageId
+POST /api/pages/:pageId/optimize
+POST /api/pages/:pageId/iterations/:iteration/accept
+POST /api/pages/:pageId/iterations/:iteration/reject
+GET  /artifacts/*
+```
+
+当前验收：
+
+- Studio 服务可以启动在 `5180`。
+- `/api/pages/page-002` 可以返回页面状态和迭代列表。
+- artifact 路由可以返回本地截图。
+- 页面无浏览器控制台错误。
+- 失败迭代不显示接受 / 回退按钮。
+
+## 下一步建议
+
+下一步建议进入 **Step 6B：上传截图与生成页面入口**。
+
+当前 Studio 还只能操作已有任务。下一步应在 UI 中补上“上传截图 -> 创建任务 -> 自动分析生成页面”的入口。

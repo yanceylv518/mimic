@@ -47,6 +47,7 @@ MVP1 excludes:
 | 5D | AI page patch | Done | `patch:ai` updates TSX from visual feedback |
 | 5E | Optimization workflow | Done | `optimize:ai` orchestrates validation, feedback, patching, build, and iteration logs |
 | 5F | Iteration accept/reject | Done | `iteration:accept` and `iteration:reject` commands |
+| 6A | Local Web Studio | Done | `studio:dev` UI for existing pages and A/B/C iteration actions |
 | 6 | Local preview and MVP1 handoff | Done | Full screenshot-to-preview flow and README for generated result |
 
 ## Step 1: Project Skeleton
@@ -687,6 +688,61 @@ Notes:
 
 - CLI remains a temporary test entry.
 - The next phase should expose these workflow operations through a local Web UI.
+
+## Step 6A: Local Web Studio
+
+### Objective
+
+Expose the existing workflow operations through a local product-style UI.
+
+### Current Result
+
+Done.
+
+Run:
+
+```bash
+npm run studio:dev
+```
+
+Open:
+
+```text
+http://127.0.0.1:5180/
+```
+
+Current UI:
+
+- Page task selector.
+- Preview link.
+- Source and generated screenshot viewer.
+- Iteration history.
+- A accept, B continue optimizing, C reject controls.
+- Human note input for the next optimization round.
+
+Current API:
+
+```text
+GET  /api/pages
+GET  /api/pages/:pageId
+POST /api/pages/:pageId/optimize
+POST /api/pages/:pageId/iterations/:iteration/accept
+POST /api/pages/:pageId/iterations/:iteration/reject
+GET  /artifacts/*
+```
+
+Verification:
+
+```bash
+npm run studio:dev
+Invoke-WebRequest http://127.0.0.1:5180/api/pages/page-002
+```
+
+Notes:
+
+- Studio operates on existing generated page tasks.
+- Uploading a new screenshot from the UI is not implemented yet.
+- The next step should add upload and generate-page entry points.
 
 ## Update Rule
 

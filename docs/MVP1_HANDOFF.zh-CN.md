@@ -43,6 +43,7 @@ npm run patch:ai -- --page page-002
 npm run optimize:ai -- --page page-002 --max-rounds 1 --note "页面应该左右结构，撑满页面"
 npm run iteration:accept -- --page page-002 --iteration 2
 npm run iteration:reject -- --page page-002 --iteration 2
+npm run studio:dev
 ```
 
 打开：
@@ -116,6 +117,26 @@ B 继续优化：optimize:ai
 C 回退：iteration:reject
 ```
 
+启动本地 Studio：
+
+```bash
+npm run studio:dev
+```
+
+打开：
+
+```text
+http://127.0.0.1:5180/
+```
+
+Studio 当前支持：
+
+- 查看页面任务。
+- 查看原图和生成图。
+- 查看迭代记录。
+- 输入优化提示。
+- 点击 A 接受、B 继续优化、C 回退。
+
 ## 环境变量
 
 本地 `.env`：
@@ -141,17 +162,18 @@ PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 - 能根据 `ai-feedback.md` 对当前页面应用一轮受控 TSX 补丁。
 - 能一键编排验证、反馈、补丁、构建和迭代记录。
 - 能接受或回退某一轮优化结果。
+- 能通过本地 Web UI 操作已有页面任务。
 
 ## 当前限制
 
 - 还不是像素级复刻。
 - 模型生成结果仍需要人工对照和迭代。
 - 视觉验证报告目前是人工对比，不是自动评分。
-- 还没有 Web UI，当前仍通过 CLI 验证 workflow。
+- Studio 还不能上传新截图创建任务。
 - 还没有组件沉淀能力。
 
 ## 下一步建议
 
-建议进入 **Step 6A：本地 Web UI 产品雏形**。
+建议进入 **Step 6B：上传截图与生成页面入口**。
 
-也就是把上传、生成、继续优化、接受、回退这些能力放到一个本地页面里，最终用户不需要接触命令行。
+也就是在 Studio 中补上上传截图、创建任务、自动分析和生成页面按钮，进一步减少命令行依赖。
