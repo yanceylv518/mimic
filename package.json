@@ -9,6 +9,7 @@
     "analyze": "node src/cli.mjs analyze",
     "analyze:auto": "node src/cli.mjs analyze:auto",
     "cli": "node src/cli.mjs",
+    "feedback:ai": "node src/cli.mjs feedback:ai",
     "generate": "node src/cli.mjs generate",
     "mvp1:status": "node scripts/status.mjs",
     "preview:check": "node scripts/preview-check.mjs",

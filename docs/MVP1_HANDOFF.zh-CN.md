@@ -37,6 +37,8 @@ npm run render -- --page page-002
 npm run render:ai -- --page page-002
 npm run preview:build
 npm run preview:dev
+npm run validate:visual -- --page page-002
+npm run feedback:ai -- --page page-002
 ```
 
 打开：
@@ -63,6 +65,18 @@ npm run validate:visual -- --page page-002
 validation/page-002/report.md
 ```
 
+生成 AI 视觉反馈：
+
+```bash
+npm run feedback:ai -- --page page-002
+```
+
+反馈位置：
+
+```text
+validation/page-002/ai-feedback.md
+```
+
 ## 环境变量
 
 本地 `.env`：
@@ -84,17 +98,18 @@ PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 - 能生成 React + Tailwind 预览页面。
 - 能让代码模型基于 `analysis.json` 生成 TSX。
 - 能生成本地视觉验证报告。
+- 能让视觉模型对比原图和预览图，输出下一轮修正建议。
 
 ## 当前限制
 
 - 还不是像素级复刻。
 - 模型生成结果仍需要人工对照和迭代。
 - 视觉验证报告目前是人工对比，不是自动评分。
-- 还没有多轮修改能力。
+- 已有视觉反馈，但还没有自动应用补丁。
 - 还没有组件沉淀能力。
 
 ## 下一步建议
 
-建议进入 **Step 5C：视觉反馈修正循环**。
+建议进入 **Step 5D：反馈驱动的页面补丁**。
 
-也就是把原截图、预览截图和验证报告交给模型，让模型输出具体差异和下一轮 TSX 修改。
+也就是读取 `ai-feedback.md` 和当前 `Page.tsx`，让模型生成一轮受控 TSX 修改，然后继续用 `preview:build` 和 `validate:visual` 验收。

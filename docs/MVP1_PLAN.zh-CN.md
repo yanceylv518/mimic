@@ -23,6 +23,7 @@
 | 4D | 视觉验证报告 | 已完成 | Playwright 截图与本地对比报告 |
 | 5 | React 页面生成 | 已完成 | `page.tsx` 与预览同步 |
 | 5B | 模型生成 TSX | 已完成 | `render:ai` 根据 `analysis.json` 生成页面代码 |
+| 5C | AI 视觉反馈 | 已完成 | `feedback:ai` 对比原图和预览图并输出修正建议 |
 | 6 | MVP1 交付文档 | 已完成 | 中英文交付说明 |
 
 ## 关键说明
@@ -113,6 +114,7 @@ npm run render:ai -- --page page-002
 npm run preview:build
 npm run preview:check
 npm run validate:visual -- --page page-002
+npm run feedback:ai -- --page page-002
 ```
 
 ## Step 5B：模型生成 TSX
@@ -148,6 +150,38 @@ preview/src/generated/Page.tsx
 
 ## 下一步建议
 
-下一步建议进入 **Step 5C：基于视觉验证报告的自动修正循环**。
+## Step 5C：AI 视觉反馈
 
-当前模型已经能根据 `analysis.json` 生成 TSX。Step 5C 可以让系统把原截图、预览截图和验证报告交给模型，生成一轮“具体修正建议”或自动更新页面代码。
+运行：
+
+```bash
+npm run feedback:ai -- --page page-002
+```
+
+这一步会读取：
+
+```text
+validation/page-002/source-screenshot.png
+validation/page-002/generated-preview.png
+validation/page-002/report.md
+prompts/visual-feedback.md
+```
+
+然后输出：
+
+```text
+validation/page-002/ai-feedback.md
+```
+
+当前验收：
+
+- `feedback:ai --dry-run` 可以检查本地验证产物是否齐全。
+- `feedback:ai` 可以真实调用模型生成中文视觉反馈。
+- 反馈内容包含主要差异、推荐修正和下一轮补丁范围。
+- 这一步只产出建议，不直接改 TSX。
+
+## 下一步建议
+
+下一步建议进入 **Step 5D：根据 AI 反馈生成一轮页面补丁**。
+
+Step 5C 已经能知道“哪里不像”。Step 5D 再让模型基于 `ai-feedback.md` 和当前 `Page.tsx` 生成一轮受控修改，但仍保留人工验收点。

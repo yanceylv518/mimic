@@ -43,6 +43,7 @@ MVP1 excludes:
 | 4D | Visual validation report | Done | Playwright screenshot capture and local comparison report |
 | 5 | Generate React page from `analysis.json` | Done | `page.tsx` and synced preview page |
 | 5B | AI page rendering | Done | `render:ai` command that generates TSX from `analysis.json` |
+| 5C | AI visual feedback | Done | `feedback:ai` compares source and generated screenshots |
 | 6 | Local preview and MVP1 handoff | Done | Full screenshot-to-preview flow and README for generated result |
 
 ## Step 1: Project Skeleton
@@ -536,6 +537,36 @@ Notes:
 - `prompts/generate-page.md` now instructs the model to generate TSX only.
 - Local generated artifacts remain ignored by git.
 - The next useful step is an automatic visual feedback loop that compares source and preview screenshots.
+
+## Step 5C: AI Visual Feedback
+
+### Objective
+
+Use a vision model to compare the source screenshot and generated preview screenshot, then produce actionable patch guidance.
+
+### Current Result
+
+Done.
+
+Verification:
+
+```bash
+npm run feedback:ai -- --page page-002 --dry-run
+npm run feedback:ai -- --page page-002
+npm run preview:build
+```
+
+Outputs:
+
+```text
+validation/page-002/ai-feedback.md
+```
+
+Notes:
+
+- This step reads the visual validation artifacts from `validation/<page>/`.
+- It does not automatically modify TSX.
+- The next step should use this feedback as controlled input for one page patch.
 
 ## Update Rule
 
