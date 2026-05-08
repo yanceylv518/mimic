@@ -57,20 +57,43 @@ npm run preview:check
 
 ## 重要限制
 
-MVP1 还不能自动理解截图。
+MVP1 默认流程仍不自动理解截图。
 
-当前 `page-002` 的 `analysis.json` 来自：
+当前 `page-002` 的演示 `analysis.json` 来自：
 
 ```text
 examples/page-analysis.example.json
 ```
 
-这个文件是演示分析数据。里面的布局、颜色、间距、字体风格都是人工写好的占位内容，不是从截图中自动提取的。自动视觉分析应作为后续 Step 4B 接入。
+这个文件是演示分析数据。里面的布局、颜色、间距、字体风格都是人工写好的占位内容，不是从截图中自动提取的。
+
+## Step 4B：自动视觉分析
+
+Step 4B 已新增可选的自动视觉分析命令。它已经实现，但真实调用需要配置 `OPENAI_API_KEY`。
+
+干跑检查：
+
+```bash
+npm run analyze:auto -- --page page-002 --dry-run
+```
+
+真实 API 调用：
+
+```powershell
+$env:OPENAI_API_KEY="..."
+npm run analyze:auto -- --page page-002
+```
+
+可选模型覆盖：
+
+```powershell
+$env:PAGE_MIMIC_OPENAI_MODEL="gpt-4.1-mini"
+```
 
 ## 下一步建议
 
 进入 MVP2 前，可以先选择一个方向：
 
-1. 增加 Step 4B：调用多模态模型，从 `screenshot.png` 自动生成 `analysis.json`。
+1. 使用真实 API key 跑 Step 4B，并检查生成的 `analysis.json`。
 2. 增强 Step 5：让当前规则生成器能从 schema 生成更丰富的页面。
 3. 开始 MVP2：围绕现有 CLI 流程搭建本地 Web 工作台。

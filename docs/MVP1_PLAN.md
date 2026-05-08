@@ -38,6 +38,7 @@ MVP1 excludes:
 | 2 | React + Tailwind preview app | Done | Vite preview app at `preview/`, local preview on port `5174` |
 | 3 | CLI base commands | Done | CLI entry, image input handling, generated page folder |
 | 4 | Page analysis prompt and `analysis.json` | Done | Stable analysis schema and generated analysis file |
+| 4B | Automatic vision analysis | Implemented, API run pending | `analyze:auto` command using OpenAI Responses API |
 | 5 | Generate React page from `analysis.json` | Done | `page.tsx` and synced preview page |
 | 6 | Local preview and MVP1 handoff | Done | Full screenshot-to-preview flow and README for generated result |
 
@@ -267,6 +268,67 @@ Notes:
 - `page-001` was created with a tiny CLI smoke-test image.
 - `page-002` was created from the user's real screenshot and is the current Step 4 verification target.
 - The current Step 4 verification proves that analysis data can be written and validated for `page-002`; it does not prove that the system can visually understand `page-002` yet.
+
+## Step 4B: Automatic Vision Analysis
+
+### Objective
+
+Generate `analysis.json` directly from `screenshot.png` using a multimodal model.
+
+### Planned Work
+
+- Add an `analyze:auto` CLI command.
+- Read the screenshot path from `metadata.json`.
+- Send the screenshot and `prompts/analyze-page.md` to a vision-capable model.
+- Request structured JSON that matches the page analysis schema.
+- Validate the returned JSON before writing it to `generated/<page-id>/analysis.json`.
+- Keep the command optional so MVP1 still works without an API key.
+
+### Output
+
+```text
+src/commands/analyze-auto.mjs
+src/lib/openai-vision-analysis.mjs
+src/lib/page-analysis-json-schema.mjs
+.env.example
+```
+
+### Acceptance Criteria
+
+- `npm run analyze:auto -- --page page-002 --dry-run` validates local inputs without sending an API request.
+- Missing `OPENAI_API_KEY` fails with a clear error.
+- With `OPENAI_API_KEY`, the command can call the OpenAI Responses API and write a validated `analysis.json`.
+
+### Current Result
+
+Implemented, API run pending.
+
+Commit:
+
+```text
+e60f01c Add automatic vision analysis command
+```
+
+Verification completed:
+
+```bash
+npm run analyze:auto -- --page page-002 --dry-run
+npm run cli -- check
+npm run preview:build
+```
+
+Pending verification:
+
+```powershell
+$env:OPENAI_API_KEY="..."
+npm run analyze:auto -- --page page-002
+```
+
+Notes:
+
+- The command uses the OpenAI Responses API with image input and structured JSON output.
+- The default model is configured by `PAGE_MIMIC_OPENAI_MODEL`, with `gpt-4.1-mini` as the current local default.
+- The default can be changed without code edits.
 
 ## Step 5: Generate React Page From `analysis.json`
 

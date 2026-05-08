@@ -1,4 +1,5 @@
 import { analyzeCommand } from "./commands/analyze.mjs";
+import { analyzeAutoCommand } from "./commands/analyze-auto.mjs";
 import { checkCommand } from "./commands/check.mjs";
 import { generateCommand } from "./commands/generate.mjs";
 import { renderCommand } from "./commands/render.mjs";
@@ -8,6 +9,7 @@ const args = process.argv.slice(3);
 
 const commands = {
   analyze: analyzeCommand,
+  "analyze:auto": analyzeAutoCommand,
   check: checkCommand,
   generate: generateCommand,
   render: renderCommand,
@@ -35,14 +37,16 @@ function helpCommand() {
 Usage:
   npm run analyze -- --page page-001 --analysis examples/page-analysis.example.json
   npm run analyze -- --page page-001 --template
+  npm run analyze:auto -- --page page-001
   npm run cli -- check
   npm run generate -- --image input/screenshot.png
   npm run render -- --page page-001
 
 Commands:
-  analyze     Write analysis.json for a generated page.
-  check       Verify required project paths.
-  generate    Create a generated page folder from one screenshot.
-  render      Generate React page code from analysis.json.
+  analyze       Write analysis.json for a generated page.
+  analyze:auto  Use a vision model to generate analysis.json from screenshot.png.
+  check         Verify required project paths.
+  generate      Create a generated page folder from one screenshot.
+  render        Generate React page code from analysis.json.
 `);
 }

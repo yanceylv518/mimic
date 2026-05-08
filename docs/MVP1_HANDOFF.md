@@ -65,12 +65,35 @@ The current `analysis.json` for `page-002` comes from:
 examples/page-analysis.example.json
 ```
 
-That file is demo analysis data. Its layout, colors, spacing, and typography are manually authored placeholders. Automatic visual analysis should be added later as Step 4B.
+That file is demo analysis data. Its layout, colors, spacing, and typography are manually authored placeholders.
+
+Step 4B now adds an optional automatic visual analysis command. It is implemented, but a real API run still requires `OPENAI_API_KEY`.
+
+## Step 4B: Automatic Visual Analysis
+
+Dry run:
+
+```bash
+npm run analyze:auto -- --page page-002 --dry-run
+```
+
+Real API run:
+
+```powershell
+$env:OPENAI_API_KEY="..."
+npm run analyze:auto -- --page page-002
+```
+
+Optional model override:
+
+```powershell
+$env:PAGE_MIMIC_OPENAI_MODEL="gpt-4.1-mini"
+```
 
 ## Next Recommended Work
 
 Before moving to MVP2, choose one of these:
 
-1. Add Step 4B: call a multimodal model to generate `analysis.json` from `screenshot.png`.
+1. Run Step 4B with a real API key and inspect the generated `analysis.json`.
 2. Improve Step 5: make the rule-based renderer produce richer pages from the current schema.
 3. Start MVP2: build a local web studio UI around the existing CLI flow.
