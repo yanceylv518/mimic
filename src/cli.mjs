@@ -4,6 +4,7 @@ import { analyzeAutoCommand } from "./commands/analyze-auto.mjs";
 import { checkCommand } from "./commands/check.mjs";
 import { feedbackAiCommand } from "./commands/feedback-ai.mjs";
 import { generateCommand } from "./commands/generate.mjs";
+import { iterationAcceptCommand, iterationRejectCommand } from "./commands/iteration-decision.mjs";
 import { optimizeAiCommand } from "./commands/optimize-ai.mjs";
 import { patchAiCommand } from "./commands/patch-ai.mjs";
 import { renderCommand } from "./commands/render.mjs";
@@ -20,6 +21,8 @@ const commands = {
   check: checkCommand,
   "feedback:ai": feedbackAiCommand,
   generate: generateCommand,
+  "iteration:accept": iterationAcceptCommand,
+  "iteration:reject": iterationRejectCommand,
   "optimize:ai": optimizeAiCommand,
   "patch:ai": patchAiCommand,
   render: renderCommand,
@@ -52,6 +55,8 @@ Usage:
   npm run cli -- check
   npm run feedback:ai -- --page page-001
   npm run generate -- --image input/screenshot.png
+  npm run iteration:accept -- --page page-001 --iteration 1
+  npm run iteration:reject -- --page page-001 --iteration 1
   npm run optimize:ai -- --page page-001 --max-rounds 1
   npm run patch:ai -- --page page-001
   npm run render -- --page page-001
@@ -63,6 +68,8 @@ Commands:
   check         Verify required project paths.
   feedback:ai   Use a vision model to compare source and generated screenshots.
   generate      Create a generated page folder from one screenshot.
+  iteration:accept  Accept one optimization iteration.
+  iteration:reject  Reject one optimization iteration and restore its before.tsx.
   optimize:ai   Run one or more AI optimization workflow rounds.
   patch:ai      Use AI visual feedback to patch the generated React page.
   render        Generate React page code from analysis.json.

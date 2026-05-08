@@ -26,6 +26,7 @@
 | 5C | AI 视觉反馈 | 已完成 | `feedback:ai` 对比原图和预览图并输出修正建议 |
 | 5D | AI 页面补丁 | 已完成 | `patch:ai` 根据视觉反馈修正当前 TSX |
 | 5E | 优化工作流 | 已完成 | `optimize:ai` 编排验证、反馈、补丁、构建和迭代记录 |
+| 5F | 迭代接受 / 回退 | 已完成 | `iteration:accept` 与 `iteration:reject` |
 | 6 | MVP1 交付文档 | 已完成 | 中英文交付说明 |
 
 ## 关键说明
@@ -119,6 +120,8 @@ npm run validate:visual -- --page page-002
 npm run feedback:ai -- --page page-002
 npm run patch:ai -- --page page-002
 npm run optimize:ai -- --page page-002 --max-rounds 1 --note "页面应该左右结构，撑满页面"
+npm run iteration:accept -- --page page-002 --iteration 2
+npm run iteration:reject -- --page page-002 --iteration 2
 ```
 
 ## Step 5B：模型生成 TSX
@@ -276,6 +279,37 @@ validation/page-002/iterations/iteration-001/
 
 ## 下一步建议
 
-下一步建议进入 **Step 5F：迭代接受 / 回退命令**。
+## Step 5F：迭代接受 / 回退命令
 
-现在系统可以自动产出多轮优化结果，但还缺少产品化的“接受这一轮”和“回退到上一轮”命令。
+接受某一轮：
+
+```bash
+npm run iteration:accept -- --page page-002 --iteration 2 --note "人工确认可接受"
+```
+
+回退某一轮：
+
+```bash
+npm run iteration:reject -- --page page-002 --iteration 2 --note "这一轮不接受"
+```
+
+命令行为：
+
+- `accept` 会把该轮 `after.tsx` 同步到当前预览页和 `generated/page-002/page.tsx`。
+- `reject` 会把该轮 `before.tsx` 同步到当前预览页和 `generated/page-002/page.tsx`。
+- 两个命令都会在对应 iteration 目录生成 `decision.json`。
+- 两个命令都支持 `--dry-run`。
+
+这一步对应产品里的人工选择：
+
+```text
+A 接受  -> iteration:accept
+C 回退  -> iteration:reject
+B 继续优化 -> optimize:ai
+```
+
+## 下一步建议
+
+下一步建议进入 **Step 6A：本地 Web UI 产品雏形**。
+
+现在底层 workflow 已经能覆盖“生成、优化、接受、回退”。下一阶段可以把这些命令包装成页面按钮，而不是让最终用户接触命令行。

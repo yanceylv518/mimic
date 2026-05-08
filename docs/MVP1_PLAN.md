@@ -46,6 +46,7 @@ MVP1 excludes:
 | 5C | AI visual feedback | Done | `feedback:ai` compares source and generated screenshots |
 | 5D | AI page patch | Done | `patch:ai` updates TSX from visual feedback |
 | 5E | Optimization workflow | Done | `optimize:ai` orchestrates validation, feedback, patching, build, and iteration logs |
+| 5F | Iteration accept/reject | Done | `iteration:accept` and `iteration:reject` commands |
 | 6 | Local preview and MVP1 handoff | Done | Full screenshot-to-preview flow and README for generated result |
 
 ## Step 1: Project Skeleton
@@ -649,6 +650,43 @@ Notes:
 - The workflow accepts a human `--note` for structural corrections.
 - Iteration artifacts are local and ignored by git.
 - The next step should add accept/reject commands for iteration results.
+
+## Step 5F: Iteration Accept / Reject
+
+### Objective
+
+Turn manual A/B/C decisions into product-style commands.
+
+### Current Result
+
+Done.
+
+Verification:
+
+```bash
+npm run iteration:accept -- --page page-002 --iteration 2 --dry-run
+npm run iteration:reject -- --page page-002 --iteration 2 --dry-run
+```
+
+Behavior:
+
+- `iteration:accept` syncs `after.tsx` to the current generated page.
+- `iteration:reject` syncs `before.tsx` to the current generated page.
+- Both commands write `decision.json` inside the iteration folder.
+- Both commands support `--note` and `--dry-run`.
+
+Decision mapping:
+
+```text
+A Accept -> iteration:accept
+B Continue optimizing -> optimize:ai
+C Roll back -> iteration:reject
+```
+
+Notes:
+
+- CLI remains a temporary test entry.
+- The next phase should expose these workflow operations through a local Web UI.
 
 ## Update Rule
 

@@ -41,6 +41,8 @@ npm run validate:visual -- --page page-002
 npm run feedback:ai -- --page page-002
 npm run patch:ai -- --page page-002
 npm run optimize:ai -- --page page-002 --max-rounds 1 --note "页面应该左右结构，撑满页面"
+npm run iteration:accept -- --page page-002 --iteration 2
+npm run iteration:reject -- --page page-002 --iteration 2
 ```
 
 打开：
@@ -99,6 +101,21 @@ npm run optimize:ai -- --page page-002 --max-rounds 1 --note "页面应该左右
 validation/page-002/iterations/iteration-*/
 ```
 
+接受或回退某一轮：
+
+```bash
+npm run iteration:accept -- --page page-002 --iteration 2 --note "人工确认可接受"
+npm run iteration:reject -- --page page-002 --iteration 2 --note "这一轮不接受"
+```
+
+对应人工选择：
+
+```text
+A 接受：iteration:accept
+B 继续优化：optimize:ai
+C 回退：iteration:reject
+```
+
 ## 环境变量
 
 本地 `.env`：
@@ -123,17 +140,18 @@ PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 - 能让视觉模型对比原图和预览图，输出下一轮修正建议。
 - 能根据 `ai-feedback.md` 对当前页面应用一轮受控 TSX 补丁。
 - 能一键编排验证、反馈、补丁、构建和迭代记录。
+- 能接受或回退某一轮优化结果。
 
 ## 当前限制
 
 - 还不是像素级复刻。
 - 模型生成结果仍需要人工对照和迭代。
 - 视觉验证报告目前是人工对比，不是自动评分。
-- 已有自动优化记录，但还没有接受 / 回退命令。
+- 还没有 Web UI，当前仍通过 CLI 验证 workflow。
 - 还没有组件沉淀能力。
 
 ## 下一步建议
 
-建议进入 **Step 5F：迭代接受 / 回退命令**。
+建议进入 **Step 6A：本地 Web UI 产品雏形**。
 
-也就是让用户不需要手动找备份文件，只通过命令或未来按钮选择“接受当前轮”或“回退上一轮”。
+也就是把上传、生成、继续优化、接受、回退这些能力放到一个本地页面里，最终用户不需要接触命令行。
