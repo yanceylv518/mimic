@@ -39,6 +39,7 @@ npm run preview:build
 npm run preview:dev
 npm run validate:visual -- --page page-002
 npm run feedback:ai -- --page page-002
+npm run patch:ai -- --page page-002
 ```
 
 打开：
@@ -77,6 +78,14 @@ npm run feedback:ai -- --page page-002
 validation/page-002/ai-feedback.md
 ```
 
+应用一轮 AI 页面补丁：
+
+```bash
+npm run patch:ai -- --page page-002
+npm run preview:build
+npm run validate:visual -- --page page-002
+```
+
 ## 环境变量
 
 本地 `.env`：
@@ -99,17 +108,18 @@ PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 - 能让代码模型基于 `analysis.json` 生成 TSX。
 - 能生成本地视觉验证报告。
 - 能让视觉模型对比原图和预览图，输出下一轮修正建议。
+- 能根据 `ai-feedback.md` 对当前页面应用一轮受控 TSX 补丁。
 
 ## 当前限制
 
 - 还不是像素级复刻。
 - 模型生成结果仍需要人工对照和迭代。
 - 视觉验证报告目前是人工对比，不是自动评分。
-- 已有视觉反馈，但还没有自动应用补丁。
+- 已有单轮自动补丁，但还没有补丁历史对比报告。
 - 还没有组件沉淀能力。
 
 ## 下一步建议
 
-建议进入 **Step 5D：反馈驱动的页面补丁**。
+建议进入 **Step 5E：补丁前后对比与迭代记录**。
 
-也就是读取 `ai-feedback.md` 和当前 `Page.tsx`，让模型生成一轮受控 TSX 修改，然后继续用 `preview:build` 和 `validate:visual` 验收。
+也就是把每轮补丁的输入反馈、旧截图、新截图、构建结果和人工结论记录下来，为后续多轮微调做准备。

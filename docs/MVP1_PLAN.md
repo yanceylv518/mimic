@@ -44,6 +44,7 @@ MVP1 excludes:
 | 5 | Generate React page from `analysis.json` | Done | `page.tsx` and synced preview page |
 | 5B | AI page rendering | Done | `render:ai` command that generates TSX from `analysis.json` |
 | 5C | AI visual feedback | Done | `feedback:ai` compares source and generated screenshots |
+| 5D | AI page patch | Done | `patch:ai` updates TSX from visual feedback |
 | 6 | Local preview and MVP1 handoff | Done | Full screenshot-to-preview flow and README for generated result |
 
 ## Step 1: Project Skeleton
@@ -567,6 +568,41 @@ Notes:
 - This step reads the visual validation artifacts from `validation/<page>/`.
 - It does not automatically modify TSX.
 - The next step should use this feedback as controlled input for one page patch.
+
+## Step 5D: AI Page Patch
+
+### Objective
+
+Apply one controlled TSX patch from `ai-feedback.md` and the current generated page.
+
+### Current Result
+
+Done.
+
+Verification:
+
+```bash
+npm run patch:ai -- --page page-002 --dry-run
+npm run patch:ai -- --page page-002
+npm run preview:build
+npm run preview:check
+npm run validate:visual -- --page page-002
+```
+
+Outputs:
+
+```text
+preview/src/generated/Page.tsx
+generated/page-002/page.tsx
+generated/page-002/patches/before-*.tsx
+validation/page-002/report.md
+```
+
+Notes:
+
+- `patch:ai` backs up the previous TSX before writing the new version.
+- This is a single-patch loop, not a fully automated multi-iteration agent yet.
+- The next step should record patch iterations so multi-round edits remain traceable.
 
 ## Update Rule
 

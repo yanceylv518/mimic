@@ -36,6 +36,7 @@ npm run preview:build
 npm run preview:dev
 npm run validate:visual -- --page page-002
 npm run feedback:ai -- --page page-002
+npm run patch:ai -- --page page-002
 ```
 
 Then open:
@@ -57,6 +58,14 @@ npm run validate:visual -- --page page-002
 npm run feedback:ai -- --page page-002
 ```
 
+Apply one AI patch and revalidate:
+
+```bash
+npm run patch:ai -- --page page-002
+npm run preview:build
+npm run validate:visual -- --page page-002
+```
+
 ## What MVP1 Proves
 
 - A screenshot can be registered as a generated page task.
@@ -65,6 +74,7 @@ npm run feedback:ai -- --page page-002
 - Generated React + Tailwind code can be synced into the preview app.
 - A code model can generate TSX from `analysis.json` with `render:ai`.
 - A vision model can compare source and preview screenshots with `feedback:ai`.
+- A code model can apply one controlled TSX patch with `patch:ai`.
 - The preview app builds and runs locally.
 
 ## Important Limitation
@@ -73,7 +83,7 @@ MVP1 is now a working local loop, but it is not a pixel-level recreation system 
 
 The current visual validation report is still a manual comparison aid. It captures the source screenshot, generated preview screenshot, console errors, and a checklist, but it does not score similarity automatically.
 
-AI visual feedback is advisory only. It writes concrete differences and recommended fixes, but it does not apply code changes yet.
+AI patching is intentionally single-step. It applies one controlled TSX rewrite, then the developer should build and validate before running another iteration.
 
 ## Step 4B: Automatic Visual Analysis
 
@@ -101,6 +111,6 @@ PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 
 Before moving to MVP2, choose one of these:
 
-1. Add Step 5D: apply one controlled TSX patch from `ai-feedback.md`.
+1. Add Step 5E: patch iteration logs with before/after screenshots and command results.
 2. Improve the generation prompt for better dashboard spacing, table density, and sidebar fidelity.
 3. Start MVP2: build a local web studio UI around the existing CLI flow.

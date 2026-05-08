@@ -24,6 +24,7 @@
 | 5 | React 页面生成 | 已完成 | `page.tsx` 与预览同步 |
 | 5B | 模型生成 TSX | 已完成 | `render:ai` 根据 `analysis.json` 生成页面代码 |
 | 5C | AI 视觉反馈 | 已完成 | `feedback:ai` 对比原图和预览图并输出修正建议 |
+| 5D | AI 页面补丁 | 已完成 | `patch:ai` 根据视觉反馈修正当前 TSX |
 | 6 | MVP1 交付文档 | 已完成 | 中英文交付说明 |
 
 ## 关键说明
@@ -115,6 +116,7 @@ npm run preview:build
 npm run preview:check
 npm run validate:visual -- --page page-002
 npm run feedback:ai -- --page page-002
+npm run patch:ai -- --page page-002
 ```
 
 ## Step 5B：模型生成 TSX
@@ -182,6 +184,48 @@ validation/page-002/ai-feedback.md
 
 ## 下一步建议
 
-下一步建议进入 **Step 5D：根据 AI 反馈生成一轮页面补丁**。
+## Step 5D：AI 页面补丁
 
-Step 5C 已经能知道“哪里不像”。Step 5D 再让模型基于 `ai-feedback.md` 和当前 `Page.tsx` 生成一轮受控修改，但仍保留人工验收点。
+运行：
+
+```bash
+npm run patch:ai -- --page page-002
+```
+
+这一步会读取：
+
+```text
+generated/page-002/analysis.json
+validation/page-002/ai-feedback.md
+preview/src/generated/Page.tsx
+prompts/patch-page.md
+```
+
+然后输出：
+
+```text
+generated/page-002/page.tsx
+preview/src/generated/Page.tsx
+generated/page-002/patches/before-*.tsx
+```
+
+当前验收：
+
+- `patch:ai --dry-run` 可以检查输入是否齐全。
+- `patch:ai` 可以真实调用模型生成一轮 TSX 修正。
+- 旧版本 TSX 会备份到本地 `patches/`。
+- 补丁后的页面通过 `preview:build`。
+- 补丁后的页面可以继续生成视觉验证报告。
+
+注意：这一步会修改当前预览页，因此每次运行后都应该跑：
+
+```bash
+npm run preview:build
+npm run validate:visual -- --page page-002
+```
+
+## 下一步建议
+
+下一步建议进入 **Step 5E：补丁前后对比与迭代记录**。
+
+现在系统已经能“生成页面 -> 对比反馈 -> 应用补丁”。Step 5E 应该把每轮补丁的反馈、前后截图、构建结果记录成一个迭代日志，方便后续多轮微调和人工回看。
