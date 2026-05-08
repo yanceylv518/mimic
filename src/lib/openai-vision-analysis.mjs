@@ -12,6 +12,7 @@ const mimeTypes = {
 export async function analyzeScreenshotWithOpenAI({
   apiKey,
   baseUrl,
+  debug = false,
   model,
   pageId,
   prompt,
@@ -54,11 +55,37 @@ export async function analyzeScreenshotWithOpenAI({
     })
   });
 
-  const payload = await response.json().catch(() => null);
+  const responseText = await response.text();
+  const payload = parseJson(responseText);
+  const contentType = response.headers.get("content-type") ?? "";
+
+  if (debug) {
+    console.error("OpenAI response debug summary:");
+    console.error(
+      JSON.stringify(
+        {
+          status: response.status,
+          statusText: response.statusText,
+          contentType,
+          textPreview: responseText.slice(0, 500),
+          payload: summarizePayload(payload)
+        },
+        null,
+        2
+      )
+    );
+  }
 
   if (!response.ok) {
     const message = payload?.error?.message ?? `${response.status} ${response.statusText}`;
     throw new Error(`OpenAI analysis request failed: ${message}`);
+  }
+
+  if (!payload) {
+    const preview = responseText.slice(0, 120).replace(/\s+/g, " ").trim();
+    throw new Error(
+      `OpenAI analysis response was not JSON. Check OPENAI_BASE_URL; it should be an API endpoint ending in /v1, not a web console URL. Content-Type: ${contentType || "unknown"}. Preview: ${preview}`
+    );
   }
 
   const outputText = extractOutputText(payload);
@@ -71,6 +98,14 @@ export async function analyzeScreenshotWithOpenAI({
     return JSON.parse(outputText);
   } catch {
     throw new Error("OpenAI analysis response was not valid JSON.");
+  }
+}
+
+function parseJson(text) {
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
   }
 }
 
@@ -103,4 +138,47 @@ function extractOutputText(payload) {
   }
 
   return "";
+}
+
+function summarizePayload(payload) {
+  if (!payload || typeof payload !== "object") {
+    return { type: typeof payload };
+  }
+
+  return {
+    keys: Object.keys(payload),
+    id: payload.id,
+    status: payload.status,
+    error: payload.error
+      ? {
+          type: payload.error.type,
+          code: payload.error.code,
+          message: payload.error.message
+        }
+      : undefined,
+    outputTypes: Array.isArray(payload.output)
+      ? payload.output.map((item) => ({
+          type: item?.type,
+          role: item?.role,
+          status: item?.status,
+          contentTypes: Array.isArray(item?.content)
+            ? item.content.map((content) => ({
+                type: content?.type,
+                textPreview:
+                  typeof content?.text === "string" ? content.text.slice(0, 120) : undefined
+              }))
+            : undefined
+        }))
+      : undefined,
+    choicesTypes: Array.isArray(payload.choices)
+      ? payload.choices.map((choice) => ({
+          keys: Object.keys(choice ?? {}),
+          messageKeys: choice?.message ? Object.keys(choice.message) : undefined,
+          contentPreview:
+            typeof choice?.message?.content === "string"
+              ? choice.message.content.slice(0, 120)
+              : undefined
+        }))
+      : undefined
+  };
 }

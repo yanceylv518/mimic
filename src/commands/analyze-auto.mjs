@@ -45,6 +45,7 @@ export async function analyzeAutoCommand(args) {
   const analysis = await analyzeScreenshotWithOpenAI({
     apiKey,
     baseUrl,
+    debug: options.debug,
     model,
     pageId: options.page,
     prompt,
@@ -87,6 +88,11 @@ function parseArgs(args) {
 
     if (arg === "--dry-run") {
       options.dryRun = true;
+      continue;
+    }
+
+    if (arg === "--debug") {
+      options.debug = true;
       continue;
     }
 
@@ -157,5 +163,13 @@ async function updateMetadata(pageDir, details) {
 }
 
 function normalizeBaseUrl(baseUrl) {
-  return baseUrl.replace(/\/+$/, "");
+  try {
+    const url = new URL(baseUrl);
+    url.pathname = url.pathname.replace(/\/{2,}/g, "/").replace(/\/+$/, "");
+    url.search = "";
+    url.hash = "";
+    return url.toString().replace(/\/+$/, "");
+  } catch {
+    return baseUrl.replace(/\/+$/, "");
+  }
 }

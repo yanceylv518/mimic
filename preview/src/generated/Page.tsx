@@ -10,55 +10,171 @@ const sectionLabels: Record<string, string> = {
 
 const sections = [
   {
+    "elements": [
+      "logo",
+      "product name",
+      "subtitle",
+      "nav menu",
+      "active nav item",
+      "user/workspace card"
+    ],
+    "id": "sidebar",
+    "layout": "stacked",
+    "style": {
+      "background": "#0b1220",
+      "spacing": "large"
+    },
+    "type": "sidebar"
+  },
+  {
+    "elements": [
+      "search bar",
+      "refresh button",
+      "settings button",
+      "system status pill"
+    ],
     "id": "header",
-    "type": "navigation",
-    "layout": "horizontal",
-    "elements": [
-      "brand",
-      "nav-links",
-      "primary-action"
-    ],
+    "layout": "two-column",
     "style": {
-      "background": "#ffffff",
+      "background": "#0a101a",
       "spacing": "medium"
-    }
+    },
+    "type": "header"
   },
   {
-    "id": "hero",
-    "type": "hero",
-    "layout": "centered",
     "elements": [
-      "eyebrow",
+      "badge",
+      "illustration",
       "headline",
-      "paragraph",
-      "cta-group"
+      "supporting text",
+      "primary cta",
+      "secondary cta",
+      "benefit panel"
     ],
+    "id": "hero",
+    "layout": "two-column",
     "style": {
-      "background": "#f8fafc",
+      "background": "#142347",
       "spacing": "large"
-    }
+    },
+    "type": "hero"
   },
   {
-    "id": "features",
-    "type": "feature-grid",
-    "layout": "three-column",
     "elements": [
-      "feature-card",
-      "feature-card",
-      "feature-card"
+      "section title",
+      "link",
+      "3 opportunity cards",
+      "tags",
+      "card actions"
     ],
+    "id": "content",
+    "layout": "grid",
     "style": {
-      "background": "#ffffff",
-      "spacing": "large"
-    }
+      "background": "#0f1726",
+      "spacing": "medium"
+    },
+    "type": "content"
+  },
+  {
+    "elements": [
+      "3 metric cards",
+      "icons",
+      "large numbers",
+      "mini trend lines",
+      "small action button"
+    ],
+    "id": "features",
+    "layout": "grid",
+    "style": {
+      "background": "#0f1726",
+      "spacing": "medium"
+    },
+    "type": "features"
+  },
+  {
+    "elements": [
+      "task list",
+      "list rows",
+      "status icons",
+      "descriptions",
+      "row action buttons"
+    ],
+    "id": "content",
+    "layout": "stacked",
+    "style": {
+      "background": "#0f1726",
+      "spacing": "medium"
+    },
+    "type": "content"
+  },
+  {
+    "elements": [
+      "section title",
+      "link",
+      "content preview card",
+      "thumbnail",
+      "engagement stats",
+      "ai summary"
+    ],
+    "id": "content",
+    "layout": "stacked",
+    "style": {
+      "background": "#0f1726",
+      "spacing": "medium"
+    },
+    "type": "content"
+  },
+  {
+    "elements": [
+      "system status title",
+      "status rows",
+      "availability pills",
+      "view all button"
+    ],
+    "id": "sidebar",
+    "layout": "stacked",
+    "style": {
+      "background": "#0f1726",
+      "spacing": "medium"
+    },
+    "type": "sidebar"
+  },
+  {
+    "elements": [
+      "quick access title",
+      "icon tiles",
+      "labels"
+    ],
+    "id": "sidebar",
+    "layout": "grid",
+    "style": {
+      "background": "#0f1726",
+      "spacing": "medium"
+    },
+    "type": "sidebar"
+  },
+  {
+    "elements": [
+      "assistant title",
+      "support text",
+      "cta button",
+      "mascot illustration"
+    ],
+    "id": "sidebar",
+    "layout": "two-column",
+    "style": {
+      "background": "#0f1726",
+      "spacing": "medium"
+    },
+    "type": "sidebar"
   }
 ];
 
 export default function GeneratedPage() {
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-950">
+    <main className="min-h-screen bg-white text-slate-950">
       <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-6 py-8 sm:px-8 lg:px-10">
-        <PageHeader pageType="landing-page" summary="A simple marketing landing page with a top navigation, centered hero, primary call to action, and feature cards." />
+        <PageHeader pageType="dashboard" summary="A dark-themed AI operations dashboard with a persistent left sidebar, top utility bar, a prominent recommendation hero, opportunity and task management cards in the main area, and a right sidebar for system status, shortcuts, and assistant support." />
         <div className="mt-10 flex flex-col gap-8">
           {sections.map((section) => (
             <SectionBlock key={section.id} section={section} />
