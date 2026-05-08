@@ -50,7 +50,7 @@ export default function GeneratedPage() {
               M
             </div>
             <h1 className="mt-4 text-xl font-bold">Mimic Console</h1>
-            <p className="mt-1 text-sm text-slate-400">AI operations dashboard</p>
+            <p className="mt-1 text-sm text-slate-400">{leftSidebar.title || "AI operations dashboard"}</p>
           </div>
           <ElementList elements={leftSidebar.elements || []} variant="nav" />
         </aside>
@@ -84,11 +84,16 @@ export default function GeneratedPage() {
 type Section = {
   id: string;
   type: string;
+  title?: string;
+  description?: string;
   layout?: string;
   elements?: string[];
   style?: {
     background?: string;
+    foreground?: string;
     spacing?: string;
+    radius?: string;
+    border?: string;
   };
 };
 
@@ -126,9 +131,11 @@ function Hero({ section, summary }: { section: Section; summary: string }) {
             {section.layout || "two-column"}
           </p>
           <h1 className="mt-4 max-w-3xl text-4xl font-bold leading-tight text-white">
-            Dark AI operations dashboard
+            {section.title || "Dark AI operations dashboard"}
           </h1>
-          <p className="mt-4 max-w-3xl text-sm leading-6 text-blue-100/80">{summary}</p>
+          <p className="mt-4 max-w-3xl text-sm leading-6 text-blue-100/80">
+            {section.description || summary}
+          </p>
           <div className="mt-5 flex flex-wrap gap-3">
             {elements.slice(0, 4).map((element, index) => (
               <span
@@ -151,15 +158,26 @@ function Hero({ section, summary }: { section: Section; summary: string }) {
 
 function Panel({ section, compact = false }: { section: Section; compact?: boolean }) {
   const elements = Array.isArray(section.elements) ? section.elements : [];
+  const background = section.style?.background || "#0f1726";
+  const borderClass = borderToClass(section.style?.border);
+  const radiusClass = radiusToClass(section.style?.radius);
 
   return (
-    <section className="rounded-2xl border border-white/10 bg-[#0f1726] p-5 shadow-xl shadow-black/20">
+    <section
+      className={radiusClass + " " + borderClass + " p-5 shadow-xl shadow-black/20"}
+      style={{ backgroundColor: background }}
+    >
       <div className="mb-4 flex items-center justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
             {section.type}
           </p>
-          <h3 className="mt-1 text-lg font-bold text-slate-100">{section.id}</h3>
+          <h3 className="mt-1 text-lg font-bold text-slate-100">
+            {section.title || section.id}
+          </h3>
+          {section.description ? (
+            <p className="mt-2 max-w-md text-sm leading-5 text-slate-400">{section.description}</p>
+          ) : null}
         </div>
         <span className="rounded-full bg-blue-400/10 px-3 py-1 text-xs text-blue-200">
           {section.layout || "layout"}
@@ -205,6 +223,38 @@ function ElementList({ elements, variant }: { elements: string[]; variant: "nav"
       ))}
     </div>
   );
+}
+
+function borderToClass(border?: string) {
+  if (!border || border === "none") {
+    return "border border-white/5";
+  }
+
+  if (border.includes("strong")) {
+    return "border border-blue-300/30";
+  }
+
+  if (border.includes("glow")) {
+    return "border border-blue-400/30 ring-1 ring-blue-400/20";
+  }
+
+  return "border border-white/10";
+}
+
+function radiusToClass(radius?: string) {
+  if (!radius || radius === "0px") {
+    return "rounded-none";
+  }
+
+  if (radius.includes("full")) {
+    return "rounded-full";
+  }
+
+  if (radius.includes("12") || radius.includes("16") || radius.includes("large")) {
+    return "rounded-2xl";
+  }
+
+  return "rounded-xl";
 }
 `;
 }

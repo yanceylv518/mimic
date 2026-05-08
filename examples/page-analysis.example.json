@@ -11,31 +11,46 @@
     {
       "id": "header",
       "type": "navigation",
+      "title": "Top navigation",
+      "description": "Horizontal navigation with brand, links, and a primary action.",
       "layout": "horizontal",
       "elements": ["brand", "nav-links", "primary-action"],
       "style": {
         "background": "#ffffff",
-        "spacing": "medium"
+        "foreground": "#0f172a",
+        "spacing": "medium",
+        "radius": "0px",
+        "border": "subtle"
       }
     },
     {
       "id": "hero",
       "type": "hero",
+      "title": "Marketing hero",
+      "description": "Centered hero content with headline, supporting text, and call-to-action buttons.",
       "layout": "centered",
       "elements": ["eyebrow", "headline", "paragraph", "cta-group"],
       "style": {
         "background": "#f8fafc",
-        "spacing": "large"
+        "foreground": "#0f172a",
+        "spacing": "large",
+        "radius": "12px",
+        "border": "none"
       }
     },
     {
       "id": "features",
       "type": "feature-grid",
+      "title": "Feature grid",
+      "description": "Three-column feature card section.",
       "layout": "three-column",
       "elements": ["feature-card", "feature-card", "feature-card"],
       "style": {
         "background": "#ffffff",
-        "spacing": "large"
+        "foreground": "#0f172a",
+        "spacing": "large",
+        "radius": "12px",
+        "border": "subtle"
       }
     }
   ],

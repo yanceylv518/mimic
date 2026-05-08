@@ -33,12 +33,18 @@ export const pageAnalysisJsonSchema = {
       items: {
         type: "object",
         additionalProperties: false,
-        required: ["id", "type", "layout", "elements", "style"],
+        required: ["id", "type", "title", "description", "layout", "elements", "style"],
         properties: {
           id: {
             type: "string"
           },
           type: {
+            type: "string"
+          },
+          title: {
+            type: "string"
+          },
+          description: {
             type: "string"
           },
           layout: {
@@ -53,12 +59,21 @@ export const pageAnalysisJsonSchema = {
           style: {
             type: "object",
             additionalProperties: false,
-            required: ["background", "spacing"],
+            required: ["background", "foreground", "spacing", "radius", "border"],
             properties: {
               background: {
                 type: "string"
               },
+              foreground: {
+                type: "string"
+              },
               spacing: {
+                type: "string"
+              },
+              radius: {
+                type: "string"
+              },
+              border: {
                 type: "string"
               }
             }

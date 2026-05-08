@@ -39,6 +39,12 @@ export function validatePageAnalysis(analysis) {
     assertObject(section, "section");
     assertString(section.id, "section.id");
     assertString(section.type, "section.type");
+    if ("title" in section) {
+      assertString(section.title, "section.title");
+    }
+    if ("description" in section) {
+      assertString(section.description, "section.description");
+    }
   }
 }
 
