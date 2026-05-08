@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "pageId": "page-001",
+  "pageType": "landing-page",
+  "summary": "A simple marketing landing page with a top navigation, centered hero, primary call to action, and feature cards.",
+  "viewport": {
+    "width": 1440,
+    "height": 1024
+  },
+  "sections": [
+    {
+      "id": "header",
+      "type": "navigation",
+      "layout": "horizontal",
+      "elements": ["brand", "nav-links", "primary-action"],
+      "style": {
+        "background": "#ffffff",
+        "spacing": "medium"
+      }
+    },
+    {
+      "id": "hero",
+      "type": "hero",
+      "layout": "centered",
+      "elements": ["eyebrow", "headline", "paragraph", "cta-group"],
+      "style": {
+        "background": "#f8fafc",
+        "spacing": "large"
+      }
+    },
+    {
+      "id": "features",
+      "type": "feature-grid",
+      "layout": "three-column",
+      "elements": ["feature-card", "feature-card", "feature-card"],
+      "style": {
+        "background": "#ffffff",
+        "spacing": "large"
+      }
+    }
+  ],
+  "theme": {
+    "colors": ["#0f172a", "#2563eb", "#f8fafc", "#ffffff"],
+    "fontStyle": "modern sans-serif",
+    "spacing": "generous",
+    "radius": "12px"
+  },
+  "notes": [
+    "Use clean spacing and a restrained SaaS-style visual treatment.",
+    "Keep the generated layout responsive."
+  ]
+}

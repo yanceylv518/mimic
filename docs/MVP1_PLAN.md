@@ -37,8 +37,8 @@ MVP1 excludes:
 | 1 | Project skeleton | Done | Root package, base folders, prompt placeholders, check scripts |
 | 2 | React + Tailwind preview app | Done | Vite preview app at `preview/`, local preview on port `5174` |
 | 3 | CLI base commands | Done | CLI entry, image input handling, generated page folder |
-| 4 | Page analysis prompt and `analysis.json` | Next | Stable analysis schema and generated analysis file |
-| 5 | Generate React page from `analysis.json` | Pending | `page.tsx` and synced preview page |
+| 4 | Page analysis prompt and `analysis.json` | Done | Stable analysis schema and generated analysis file |
+| 5 | Generate React page from `analysis.json` | Next | `page.tsx` and synced preview page |
 | 6 | Local preview and MVP1 handoff | Pending | Full screenshot-to-preview flow and README for generated result |
 
 ## Step 1: Project Skeleton
@@ -212,6 +212,8 @@ generated/
     analysis.json
 prompts/
   analyze-page.md
+examples/
+  page-analysis.example.json
 ```
 
 ### Minimal Schema
@@ -237,7 +239,25 @@ prompts/
 
 ### Current Result
 
-Next.
+Done.
+
+Commit:
+
+```text
+d26f80a Add page analysis command
+```
+
+Verification:
+
+```bash
+npm run analyze -- --page page-002 --analysis examples/page-analysis.example.json
+npm run analyze -- --page page-002 --template
+```
+
+Notes:
+
+- `page-001` was created with a tiny CLI smoke-test image.
+- `page-002` was created from the user's real screenshot and is the current Step 4 verification target.
 
 ## Step 5: Generate React Page From `analysis.json`
 
@@ -272,7 +292,7 @@ preview/
 
 ### Current Result
 
-Pending.
+Next.
 
 ## Step 6: Local Preview And MVP1 Handoff
 

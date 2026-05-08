@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "check": "node scripts/check.mjs",
+    "analyze": "node src/cli.mjs analyze",
     "cli": "node src/cli.mjs",
     "generate": "node src/cli.mjs generate",
     "mvp1:status": "node scripts/status.mjs",
