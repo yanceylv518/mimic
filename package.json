@@ -1,0 +1,14 @@
+{
+  "name": "page-mimic",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local MVP for turning page screenshots into runnable React pages.",
+  "type": "module",
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "mvp1:status": "node scripts/status.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

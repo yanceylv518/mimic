@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.vite/
+.env
+.env.*
+*.log
+
+# Generated runtime outputs can contain user screenshots and large artifacts.
+generated/*
+!generated/.gitkeep
+input/*
+!input/.gitkeep
