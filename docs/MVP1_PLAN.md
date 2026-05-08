@@ -241,10 +241,18 @@ examples/
 
 Done.
 
+Important clarification:
+
+- Step 4 currently implements the `analysis.json` schema, template output, import command, and validation.
+- It does not automatically inspect the screenshot yet.
+- `examples/page-analysis.example.json` is demo data used to verify the file flow.
+- Layout values, theme colors, spacing, and typography in that example are manually authored placeholders, not extracted from `screenshot.png`.
+- Automatic visual analysis should be added later as a separate Step 4B after the schema and page generation loop are stable.
+
 Commit:
 
 ```text
-d26f80a Add page analysis command
+4027983 Add page analysis command
 ```
 
 Verification:
@@ -258,6 +266,7 @@ Notes:
 
 - `page-001` was created with a tiny CLI smoke-test image.
 - `page-002` was created from the user's real screenshot and is the current Step 4 verification target.
+- The current Step 4 verification proves that analysis data can be written and validated for `page-002`; it does not prove that the system can visually understand `page-002` yet.
 
 ## Step 5: Generate React Page From `analysis.json`
 

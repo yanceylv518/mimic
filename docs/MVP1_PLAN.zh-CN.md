@@ -241,10 +241,18 @@ examples/
 
 已完成。
 
+重要说明：
+
+- Step 4 当前完成的是 `analysis.json` schema、模板输出、导入命令和校验。
+- 当前还没有自动查看或理解截图。
+- `examples/page-analysis.example.json` 是用于验证文件流程的演示数据。
+- 示例里的布局、主题颜色、间距、字体风格是人工写好的占位内容，不是从 `screenshot.png` 中提取出来的。
+- 自动视觉分析应作为后续独立的 Step 4B，在 schema 和页面生成闭环稳定后再接入。
+
 提交：
 
 ```text
-d26f80a Add page analysis command
+4027983 Add page analysis command
 ```
 
 验证：
@@ -258,6 +266,7 @@ npm run analyze -- --page page-002 --template
 
 - `page-001` 是 CLI 冒烟测试时用极小测试图片生成的。
 - `page-002` 是用户真实截图生成的任务，也是当前 Step 4 的验证对象。
+- 当前 Step 4 的验证只能证明分析数据可以写入并校验到 `page-002`，还不能证明系统已经能视觉理解 `page-002`。
 
 ## Step 5：根据 `analysis.json` 生成 React 页面
 
