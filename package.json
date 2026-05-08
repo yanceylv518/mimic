@@ -15,6 +15,7 @@
     "preview:dev": "npm --prefix preview run dev",
     "preview:build": "npm --prefix preview run build",
     "render": "node src/cli.mjs render",
+    "render:ai": "node src/cli.mjs render:ai",
     "validate:visual": "node scripts/visual-compare.mjs"
   },
   "engines": {

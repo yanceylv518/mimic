@@ -38,10 +38,11 @@ MVP1 excludes:
 | 2 | React + Tailwind preview app | Done | Vite preview app at `preview/`, local preview on port `5174` |
 | 3 | CLI base commands | Done | CLI entry, image input handling, generated page folder |
 | 4 | Page analysis prompt and `analysis.json` | Done | Stable analysis schema and generated analysis file |
-| 4B | Automatic vision analysis | Implemented, API run pending | `analyze:auto` command using OpenAI Responses API |
+| 4B | Automatic vision analysis | Done | `analyze:auto` command using OpenAI Responses API |
 | 4C | Layout positioning | Done | Page layout columns and section position metadata |
 | 4D | Visual validation report | Done | Playwright screenshot capture and local comparison report |
 | 5 | Generate React page from `analysis.json` | Done | `page.tsx` and synced preview page |
+| 5B | AI page rendering | Done | `render:ai` command that generates TSX from `analysis.json` |
 | 6 | Local preview and MVP1 handoff | Done | Full screenshot-to-preview flow and README for generated result |
 
 ## Step 1: Project Skeleton
@@ -501,6 +502,40 @@ Handoff:
 - `docs/MVP1_HANDOFF.md`
 - `docs/MVP1_HANDOFF.zh-CN.md`
 - `generated/page-002/README.md`
+
+## Step 5B: AI Page Rendering
+
+### Objective
+
+Let a code model generate runnable React + Tailwind TSX from the visual analysis file.
+
+### Current Result
+
+Done.
+
+Verification:
+
+```bash
+npm run render:ai -- --page page-002
+npm run preview:build
+npm run preview:check
+npm run validate:visual -- --page page-002
+```
+
+Outputs:
+
+```text
+generated/page-002/page.tsx
+preview/src/generated/Page.tsx
+validation/page-002/report.md
+```
+
+Notes:
+
+- `render:ai` reads `generated/<page>/analysis.json`.
+- `prompts/generate-page.md` now instructs the model to generate TSX only.
+- Local generated artifacts remain ignored by git.
+- The next useful step is an automatic visual feedback loop that compares source and preview screenshots.
 
 ## Update Rule
 

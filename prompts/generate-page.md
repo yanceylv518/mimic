@@ -15,7 +15,11 @@ Create a single React component named `GeneratedPage` that reflects the structur
 - Do not reference assets that do not exist.
 - Use semantic HTML where practical.
 - Keep the page responsive.
-- Preserve the top-to-bottom section order from `analysis.sections`.
+- Preserve section placement using `analysis.layout` and each `section.position`.
+- For dashboards, use the inferred left / main / right column layout.
+- Make the generated page visually resemble the screenshot structure, not merely list the analysis fields.
+- Preserve readable Chinese labels exactly as provided.
+- Do not include explanations, Markdown fences, comments, or prose outside the TSX code.
 - If the analysis is sparse, generate a useful placeholder that makes the missing structure visible.
 
 ## Input
@@ -28,6 +32,11 @@ The input JSON follows this shape:
   "pageId": "page-001",
   "pageType": "landing-page",
   "summary": "",
+  "layout": {
+    "type": "dashboard",
+    "columns": ["260px", "1fr", "320px"],
+    "density": "medium"
+  },
   "sections": [],
   "theme": {
     "colors": [],

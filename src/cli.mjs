@@ -4,6 +4,7 @@ import { analyzeAutoCommand } from "./commands/analyze-auto.mjs";
 import { checkCommand } from "./commands/check.mjs";
 import { generateCommand } from "./commands/generate.mjs";
 import { renderCommand } from "./commands/render.mjs";
+import { renderAiCommand } from "./commands/render-ai.mjs";
 
 const command = process.argv[2] ?? "help";
 const args = process.argv.slice(3);
@@ -16,6 +17,7 @@ const commands = {
   check: checkCommand,
   generate: generateCommand,
   render: renderCommand,
+  "render:ai": renderAiCommand,
   help: helpCommand
 };
 
@@ -44,6 +46,7 @@ Usage:
   npm run cli -- check
   npm run generate -- --image input/screenshot.png
   npm run render -- --page page-001
+  npm run render:ai -- --page page-001
 
 Commands:
   analyze       Write analysis.json for a generated page.
@@ -51,5 +54,6 @@ Commands:
   check         Verify required project paths.
   generate      Create a generated page folder from one screenshot.
   render        Generate React page code from analysis.json.
+  render:ai     Use a code model to generate React page code from analysis.json.
 `);
 }

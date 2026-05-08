@@ -22,6 +22,7 @@
 | 4C | 布局位置分析 | 已完成 | `analysis.layout` 与 `section.position` |
 | 4D | 视觉验证报告 | 已完成 | Playwright 截图与本地对比报告 |
 | 5 | React 页面生成 | 已完成 | `page.tsx` 与预览同步 |
+| 5B | 模型生成 TSX | 已完成 | `render:ai` 根据 `analysis.json` 生成页面代码 |
 | 6 | MVP1 交付文档 | 已完成 | 中英文交付说明 |
 
 ## 关键说明
@@ -108,13 +109,45 @@ validation/page-002/generated-preview.png
 npm run cli -- check
 npm run analyze:auto -- --page page-002
 npm run render -- --page page-002
+npm run render:ai -- --page page-002
 npm run preview:build
 npm run preview:check
 npm run validate:visual -- --page page-002
 ```
 
+## Step 5B：模型生成 TSX
+
+运行：
+
+```bash
+npm run render:ai -- --page page-002
+```
+
+这一步会读取：
+
+```text
+generated/page-002/analysis.json
+prompts/generate-page.md
+```
+
+然后调用 `.env` 中配置的 OpenAI 兼容接口，生成：
+
+```text
+generated/page-002/page.tsx
+preview/src/generated/Page.tsx
+```
+
+当前验收：
+
+- `render:ai` 可以完成真实模型调用。
+- 生成的 TSX 可以通过 Vite 构建。
+- 预览健康检查通过。
+- 视觉验证报告可以继续生成。
+
+注意：`generated/page-002/` 和 `validation/page-002/` 仍是本地产物，不提交到 git。
+
 ## 下一步建议
 
-下一步建议进入 **Step 5B：让代码模型参与页面生成**。
+下一步建议进入 **Step 5C：基于视觉验证报告的自动修正循环**。
 
-当前规则渲染器已经能根据结构生成 dashboard，但还不够精细。Step 5B 可以让模型读取 `analysis.json`，直接生成更接近截图的 TSX。
+当前模型已经能根据 `analysis.json` 生成 TSX。Step 5C 可以让系统把原截图、预览截图和验证报告交给模型，生成一轮“具体修正建议”或自动更新页面代码。

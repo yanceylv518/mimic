@@ -31,6 +31,7 @@ npm run cli -- check
 npm run generate -- --image input/screenshot.png
 npm run analyze -- --page page-002 --analysis examples/page-analysis.example.json
 npm run render -- --page page-002
+npm run render:ai -- --page page-002
 npm run preview:build
 npm run preview:dev
 ```
@@ -53,21 +54,14 @@ npm run preview:check
 - Each page task can store screenshot, metadata, analysis, and generated code.
 - `analysis.json` can be validated and used as the input for React page generation.
 - Generated React + Tailwind code can be synced into the preview app.
+- A code model can generate TSX from `analysis.json` with `render:ai`.
 - The preview app builds and runs locally.
 
 ## Important Limitation
 
-MVP1 does not automatically understand the screenshot yet.
+MVP1 is now a working local loop, but it is not a pixel-level recreation system yet.
 
-The current `analysis.json` for `page-002` comes from:
-
-```text
-examples/page-analysis.example.json
-```
-
-That file is demo analysis data. Its layout, colors, spacing, and typography are manually authored placeholders.
-
-Step 4B now adds an optional automatic visual analysis command. It is implemented, but a real API run still requires `OPENAI_API_KEY`.
+The current visual validation report is still a manual comparison aid. It captures the source screenshot, generated preview screenshot, console errors, and a checklist, but it does not score similarity automatically.
 
 ## Step 4B: Automatic Visual Analysis
 
@@ -95,6 +89,6 @@ PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 
 Before moving to MVP2, choose one of these:
 
-1. Run Step 4B with a real API key and inspect the generated `analysis.json`.
-2. Improve Step 5: make the rule-based renderer produce richer pages from the current schema.
+1. Add Step 5C: visual feedback loop from source screenshot, preview screenshot, and validation report.
+2. Improve the generation prompt for better dashboard spacing, table density, and sidebar fidelity.
 3. Start MVP2: build a local web studio UI around the existing CLI flow.

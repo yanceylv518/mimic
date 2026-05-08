@@ -34,6 +34,7 @@ README.md
 npm run cli -- check
 npm run analyze:auto -- --page page-002
 npm run render -- --page page-002
+npm run render:ai -- --page page-002
 npm run preview:build
 npm run preview:dev
 ```
@@ -81,18 +82,19 @@ PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 - 能识别 dashboard 的左栏、顶栏、主内容、右侧栏。
 - 能保留部分真实中文文案。
 - 能生成 React + Tailwind 预览页面。
+- 能让代码模型基于 `analysis.json` 生成 TSX。
 - 能生成本地视觉验证报告。
 
 ## 当前限制
 
 - 还不是像素级复刻。
-- 规则渲染器仍偏模板化。
+- 模型生成结果仍需要人工对照和迭代。
 - 视觉验证报告目前是人工对比，不是自动评分。
 - 还没有多轮修改能力。
 - 还没有组件沉淀能力。
 
 ## 下一步建议
 
-建议进入 **Step 5B：模型生成 TSX**。
+建议进入 **Step 5C：视觉反馈修正循环**。
 
-也就是让代码模型基于 `analysis.json` 直接生成更接近截图的 React + Tailwind 页面，而不是只依赖当前规则渲染器。
+也就是把原截图、预览截图和验证报告交给模型，让模型输出具体差异和下一轮 TSX 修改。
