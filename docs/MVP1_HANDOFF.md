@@ -116,6 +116,7 @@ Studio can also upload a screenshot and run the generation workflow from the UI.
 - Iteration results can be accepted or rejected with explicit decision records.
 - A local Studio can operate existing page tasks without manual command chaining.
 - Studio can upload a screenshot and trigger the generation workflow.
+- Project-level dashboard rules are injected into generation, feedback, and patch workflows.
 - The preview app builds and runs locally.
 
 ## Important Limitation
@@ -129,6 +130,14 @@ AI patching is intentionally single-step. It applies one controlled TSX rewrite,
 Optimization workflows are recorded locally. Accept/reject commands now sync the chosen TSX and write `decision.json`.
 
 Upload generation is currently a long request. Progress and error states are still basic.
+
+Enabled project rules:
+
+```text
+project-rules/dashboard.md
+```
+
+These rules preserve dashboard lessons such as full-width shells, three-column layout, independent right sidebar, and toolbar alignment scope.
 
 ## Step 4B: Automatic Visual Analysis
 

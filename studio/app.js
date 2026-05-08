@@ -11,6 +11,7 @@ const elements = {
   pageId: document.querySelector("#pageId"),
   pageTitle: document.querySelector("#pageTitle"),
   refreshButton: document.querySelector("#refreshButton"),
+  rulesList: document.querySelector("#rulesList"),
   screenshotInput: document.querySelector("#screenshotInput"),
   sourceImage: document.querySelector("#sourceImage"),
   statusPill: document.querySelector("#statusPill")
@@ -29,16 +30,19 @@ await bootstrap();
 
 async function bootstrap() {
   const payload = await fetchJson("/api/pages");
+  const rulesPayload = await fetchJson("/api/rules");
   elements.pageId.innerHTML = payload.pages
     .map((page) => `<option value="${escapeHtml(page.pageId)}">${escapeHtml(page.pageId)}</option>`)
     .join("");
   state.pageId = payload.pages.at(-1)?.pageId ?? "";
   elements.pageId.value = state.pageId;
+  renderRules(rulesPayload.rules);
   await refreshPage();
 }
 
 async function refresh() {
   const payload = await fetchJson("/api/pages");
+  const rulesPayload = await fetchJson("/api/rules");
   const selected = state.pageId;
   elements.pageId.innerHTML = payload.pages
     .map((page) => `<option value="${escapeHtml(page.pageId)}">${escapeHtml(page.pageId)}</option>`)
@@ -47,6 +51,7 @@ async function refresh() {
     ? selected
     : payload.pages.at(-1)?.pageId ?? "";
   elements.pageId.value = state.pageId;
+  renderRules(rulesPayload.rules);
   await refreshPage();
 }
 
@@ -210,6 +215,17 @@ function renderIterations(iterations) {
       }
     });
   }
+}
+
+function renderRules(rules) {
+  elements.rulesList.innerHTML = rules.length
+    ? rules
+        .map(
+          (rule) =>
+            `<div class="rule-item" title="${escapeHtml(rule.path)}">${escapeHtml(rule.name)}</div>`
+        )
+        .join("")
+    : `<div class="rule-item">暂无规则</div>`;
 }
 
 function setBusy(isBusy, text = "") {

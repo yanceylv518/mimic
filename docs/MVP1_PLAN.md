@@ -49,6 +49,7 @@ MVP1 excludes:
 | 5F | Iteration accept/reject | Done | `iteration:accept` and `iteration:reject` commands |
 | 6A | Local Web Studio | Done | `studio:dev` UI for existing pages and A/B/C iteration actions |
 | 6B | Upload and generate entry | Done | Studio can upload a screenshot, create a task, and run generation workflow |
+| 6D | Project rules | Done | `project-rules/dashboard.md` is injected into model workflows |
 | 6 | Local preview and MVP1 handoff | Done | Full screenshot-to-preview flow and README for generated result |
 
 ## Step 1: Project Skeleton
@@ -788,6 +789,53 @@ Verification:
 ```bash
 node -e "import('./src/workflows/create-page-workflow.mjs')"
 node -e "import('./src/workflows/generate-page-workflow.mjs')"
+```
+
+## Step 6D: Project Rules
+
+### Objective
+
+Persist project-level lessons so new pages do not repeat known layout mistakes.
+
+### Current Result
+
+Done.
+
+New rule:
+
+```text
+project-rules/dashboard.md
+```
+
+Injected into:
+
+```text
+render:ai
+feedback:ai
+patch:ai
+optimize:ai
+Studio upload generation workflow
+```
+
+Key rules:
+
+- Dashboards fill the viewport and avoid centered app-shell cards.
+- Prefer left navigation, fluid main content, and fixed right utility sidebar.
+- Utility toolbar controls should align to the page/right-sidebar edge.
+- Do not solve toolbar alignment only with `ml-auto` when the parent header scope is too narrow.
+
+Verification:
+
+```bash
+npm run render:ai -- --page page-002 --dry-run
+npm run patch:ai -- --page page-002 --dry-run
+npm run feedback:ai -- --page page-002 --dry-run
+```
+
+Studio exposes enabled rules through:
+
+```text
+GET /api/rules
 ```
 
 ## Update Rule

@@ -1,6 +1,7 @@
 import { readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { generateVisualFeedbackWithOpenAI } from "../lib/openai-visual-feedback.mjs";
+import { appendProjectRules, loadProjectRules } from "../lib/project-rules.mjs";
 
 export async function feedbackAiCommand(args) {
   const options = parseArgs(args);
@@ -20,7 +21,10 @@ export async function feedbackAiCommand(args) {
   await assertFile(generatedScreenshotPath);
   await assertFile(reportPath);
 
-  const prompt = await readFile(path.join(root, "prompts", "visual-feedback.md"), "utf8");
+  const prompt = appendProjectRules(
+    await readFile(path.join(root, "prompts", "visual-feedback.md"), "utf8"),
+    await loadProjectRules({ cwd: root })
+  );
   const reportText = await readFile(reportPath, "utf8");
   const model = options.model ?? process.env.PAGE_MIMIC_OPENAI_MODEL ?? "gpt-4.1-mini";
   const baseUrl = normalizeBaseUrl(process.env.OPENAI_BASE_URL ?? "https://api.openai.com/v1");
@@ -33,6 +37,7 @@ export async function feedbackAiCommand(args) {
     console.log(`- Source: ${path.relative(root, sourceScreenshotPath).replaceAll("\\", "/")}`);
     console.log(`- Generated: ${path.relative(root, generatedScreenshotPath).replaceAll("\\", "/")}`);
     console.log(`- Report: ${path.relative(root, reportPath).replaceAll("\\", "/")}`);
+    console.log("- Project rules: loaded");
     console.log("- No API request was sent.");
     return;
   }

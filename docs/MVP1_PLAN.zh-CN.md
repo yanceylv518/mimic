@@ -29,6 +29,7 @@
 | 5F | 迭代接受 / 回退 | 已完成 | `iteration:accept` 与 `iteration:reject` |
 | 6A | 本地 Web UI 产品雏形 | 已完成 | `studio:dev` 提供页面、迭代和 A/B/C 操作界面 |
 | 6B | 上传截图与生成入口 | 已完成 | Studio 支持上传截图、创建任务、一键生成页面 |
+| 6D | 项目偏好 / 全局规则 | 已完成 | `project-rules/dashboard.md` 自动注入模型链路 |
 | 6 | MVP1 交付文档 | 已完成 | 中英文交付说明 |
 
 ## 关键说明
@@ -402,3 +403,43 @@ src/workflows/generate-page-workflow.mjs
 下一步建议进入 **Step 6C：生成进度与错误展示**。
 
 当前“上传并生成页面”是一个长请求。下一步应该把它拆成可观察任务状态，至少在 UI 中展示当前执行到分析、渲染、构建还是验证，以及失败原因。
+
+## Step 6D：项目偏好 / 全局规则
+
+新增规则文件：
+
+```text
+project-rules/dashboard.md
+```
+
+该规则会自动注入：
+
+```text
+render:ai
+feedback:ai
+patch:ai
+optimize:ai
+Studio 上传生成 workflow
+```
+
+当前规则重点解决：
+
+- 后台页面必须撑满浏览器，不要整体居中。
+- 默认三栏结构：左侧导航、中间主内容、右侧状态工具栏。
+- 右侧栏固定宽度，独立于主内容区。
+- 刷新 / 设置 / 系统正常等工具按钮不能只在窄父级里 `ml-auto`。
+- 如果存在右侧状态卡，工具栏应与右侧状态卡边缘对齐。
+
+Studio 会在侧栏显示当前启用规则。
+
+当前验收：
+
+- `render:ai --dry-run` 显示规则已加载。
+- `patch:ai --dry-run` 显示规则已加载。
+- `feedback:ai --dry-run` 显示规则已加载。
+- `/api/rules` 可以返回 `dashboard.md`。
+- Studio 页面能显示 `dashboard.md`。
+
+## 下一步建议
+
+下一步建议进入 **Step 6C：生成进度与错误展示**。

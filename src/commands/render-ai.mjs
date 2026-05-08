@@ -2,6 +2,7 @@ import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { generateTextWithOpenAI, stripCodeFence } from "../lib/openai-text-generation.mjs";
 import { validatePageAnalysis } from "../lib/page-analysis.mjs";
+import { appendProjectRules, loadProjectRules } from "../lib/project-rules.mjs";
 
 export async function renderAiCommand(args) {
   const options = parseArgs(args);
@@ -18,7 +19,10 @@ export async function renderAiCommand(args) {
   const analysis = JSON.parse(await readFile(analysisPath, "utf8"));
   validatePageAnalysis(analysis);
 
-  const prompt = await readFile(path.join(root, "prompts", "generate-page.md"), "utf8");
+  const prompt = appendProjectRules(
+    await readFile(path.join(root, "prompts", "generate-page.md"), "utf8"),
+    await loadProjectRules({ cwd: root })
+  );
   const model = options.model ?? process.env.PAGE_MIMIC_OPENAI_MODEL ?? "gpt-4.1-mini";
   const baseUrl = normalizeBaseUrl(process.env.OPENAI_BASE_URL ?? "https://api.openai.com/v1");
 
@@ -28,6 +32,7 @@ export async function renderAiCommand(args) {
     console.log(`- Model: ${model}`);
     console.log(`- Base URL: ${baseUrl}`);
     console.log(`- Sections: ${analysis.sections.length}`);
+    console.log("- Project rules: loaded");
     console.log("- No API request was sent.");
     return;
   }

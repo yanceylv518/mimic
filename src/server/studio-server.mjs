@@ -7,6 +7,7 @@ import { createPageFromImageWorkflow, saveUploadedImageWorkflow } from "../workf
 import { generatePageWorkflow } from "../workflows/generate-page-workflow.mjs";
 import { acceptIterationWorkflow, rejectIterationWorkflow } from "../workflows/iteration-decision-workflow.mjs";
 import { optimizePageWorkflow } from "../workflows/optimize-page-workflow.mjs";
+import { listProjectRules } from "../lib/project-rules.mjs";
 
 const root = process.cwd();
 const studioDir = path.join(root, "studio");
@@ -26,6 +27,13 @@ export function startStudioServer() {
 async function handleRequest(request, response) {
   try {
     const url = new URL(request.url ?? "/", `http://${request.headers.host ?? `${host}:${port}`}`);
+
+    if (url.pathname === "/api/rules" && request.method === "GET") {
+      await sendJson(response, {
+        rules: await listProjectRules()
+      });
+      return;
+    }
 
     if (url.pathname === "/api/pages") {
       if (request.method === "GET") {
