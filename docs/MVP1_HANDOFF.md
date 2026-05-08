@@ -116,6 +116,7 @@ Studio can also upload a screenshot and run the generation workflow from the UI.
 - Iteration results can be accepted or rejected with explicit decision records.
 - A local Studio can operate existing page tasks without manual command chaining.
 - Studio can upload a screenshot and trigger the generation workflow.
+- Studio can show job progress and failure reasons for generation and optimization.
 - Project-level dashboard rules are injected into generation, feedback, and patch workflows.
 - The preview app builds and runs locally.
 
@@ -129,7 +130,7 @@ AI patching is intentionally single-step. It applies one controlled TSX rewrite,
 
 Optimization workflows are recorded locally. Accept/reject commands now sync the chosen TSX and write `decision.json`.
 
-Upload generation is currently a long request. Progress and error states are still basic.
+Studio job state is currently in memory. Restarting Studio clears job status, but generated files and iteration artifacts remain on disk.
 
 Enabled project rules:
 
@@ -165,6 +166,6 @@ PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 
 Before moving to MVP2, choose one of these:
 
-1. Start Step 6C: progress and error display for generation and optimization jobs.
+1. Start Step 7A: reusable component extraction basics.
 2. Improve the generation prompt for better dashboard spacing, table density, and sidebar fidelity.
 3. Start MVP2: real project export and reusable component extraction.

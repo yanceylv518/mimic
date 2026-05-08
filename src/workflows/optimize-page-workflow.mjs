@@ -8,6 +8,7 @@ export async function optimizePageWorkflow({
   maxRounds = 1,
   model,
   note = "",
+  onProgress = () => {},
   page
 }) {
   if (!page) {
@@ -67,6 +68,7 @@ export async function optimizePageWorkflow({
       await copyFile(previewPath, path.join(iterationDir, "before.tsx"));
       result.artifacts.beforeTsx = relative(root, path.join(iterationDir, "before.tsx"));
 
+      onProgress({ step: `${iterationName}: validate before`, stepStatus: "running" });
       await runAndRecord({
         command: process.execPath,
         args: ["scripts/visual-compare.mjs", "--page", page],
@@ -74,6 +76,7 @@ export async function optimizePageWorkflow({
         logPath: path.join(iterationDir, "01-validate-before.log"),
         result
       });
+      onProgress({ step: `${iterationName}: validate before`, stepStatus: "passed" });
       await copyValidationArtifacts({
         root,
         validationDir,
@@ -83,6 +86,7 @@ export async function optimizePageWorkflow({
       });
       result.artifacts.beforeScreenshot = relative(root, path.join(iterationDir, "before.png"));
 
+      onProgress({ step: `${iterationName}: feedback`, stepStatus: "running" });
       await runAndRecord({
         command: process.execPath,
         args: compact(["src/cli.mjs", "feedback:ai", "--page", page, model ? "--model" : "", model ?? ""]),
@@ -90,9 +94,11 @@ export async function optimizePageWorkflow({
         logPath: path.join(iterationDir, "02-feedback.log"),
         result
       });
+      onProgress({ step: `${iterationName}: feedback`, stepStatus: "passed" });
       await copyFile(path.join(validationDir, "ai-feedback.md"), path.join(iterationDir, "feedback.md"));
       result.artifacts.feedback = relative(root, path.join(iterationDir, "feedback.md"));
 
+      onProgress({ step: `${iterationName}: patch`, stepStatus: "running" });
       await runAndRecord({
         command: process.execPath,
         args: compact([
@@ -109,9 +115,11 @@ export async function optimizePageWorkflow({
         logPath: path.join(iterationDir, "03-patch.log"),
         result
       });
+      onProgress({ step: `${iterationName}: patch`, stepStatus: "passed" });
       await copyFile(previewPath, path.join(iterationDir, "after.tsx"));
       result.artifacts.afterTsx = relative(root, path.join(iterationDir, "after.tsx"));
 
+      onProgress({ step: `${iterationName}: build`, stepStatus: "running" });
       await runAndRecord({
         command: buildCommand().command,
         args: buildCommand().args,
@@ -119,7 +127,9 @@ export async function optimizePageWorkflow({
         logPath: path.join(iterationDir, "04-build.log"),
         result
       });
+      onProgress({ step: `${iterationName}: build`, stepStatus: "passed" });
 
+      onProgress({ step: `${iterationName}: validate after`, stepStatus: "running" });
       await runAndRecord({
         command: process.execPath,
         args: ["scripts/visual-compare.mjs", "--page", page],
@@ -127,6 +137,7 @@ export async function optimizePageWorkflow({
         logPath: path.join(iterationDir, "05-validate-after.log"),
         result
       });
+      onProgress({ step: `${iterationName}: validate after`, stepStatus: "passed" });
       await copyValidationArtifacts({
         root,
         validationDir,

@@ -49,6 +49,7 @@ MVP1 excludes:
 | 5F | Iteration accept/reject | Done | `iteration:accept` and `iteration:reject` commands |
 | 6A | Local Web Studio | Done | `studio:dev` UI for existing pages and A/B/C iteration actions |
 | 6B | Upload and generate entry | Done | Studio can upload a screenshot, create a task, and run generation workflow |
+| 6C | Progress and errors | Done | Studio polls jobs for generation/optimization progress and failures |
 | 6D | Project rules | Done | `project-rules/dashboard.md` is injected into model workflows |
 | 6 | Local preview and MVP1 handoff | Done | Full screenshot-to-preview flow and README for generated result |
 
@@ -836,6 +837,42 @@ Studio exposes enabled rules through:
 
 ```text
 GET /api/rules
+```
+
+## Step 6C: Progress And Error Display
+
+### Objective
+
+Make long Studio actions observable instead of blocking silently.
+
+### Current Result
+
+Done.
+
+New job manager:
+
+```text
+src/lib/studio-jobs.mjs
+```
+
+New API:
+
+```text
+GET /api/jobs/:jobId
+```
+
+Behavior:
+
+- `POST /api/pages/:pageId/generate` returns a job immediately.
+- `POST /api/pages/:pageId/optimize` returns a job immediately.
+- Studio polls the job until it passes or fails.
+- Failed jobs expose the current step and error message.
+
+Verification:
+
+```bash
+npm run preview:build
+Invoke-WebRequest http://127.0.0.1:5180/api/jobs/<job-id>
 ```
 
 ## Update Rule

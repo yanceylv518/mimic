@@ -3,6 +3,7 @@ import { mkdir, readdir, readFile, stat } from "node:fs/promises";
 import http from "node:http";
 import path from "node:path";
 import { loadEnvFile } from "../lib/env.mjs";
+import { createStudioJob, getStudioJob } from "../lib/studio-jobs.mjs";
 import { createPageFromImageWorkflow, saveUploadedImageWorkflow } from "../workflows/create-page-workflow.mjs";
 import { generatePageWorkflow } from "../workflows/generate-page-workflow.mjs";
 import { acceptIterationWorkflow, rejectIterationWorkflow } from "../workflows/iteration-decision-workflow.mjs";
@@ -35,6 +36,13 @@ async function handleRequest(request, response) {
       return;
     }
 
+    const jobMatch = url.pathname.match(/^\/api\/jobs\/([^/]+)$/);
+    if (jobMatch && request.method === "GET") {
+      const job = getStudioJob(jobMatch[1]);
+      await sendJson(response, job ?? { error: "Job not found" }, job ? 200 : 404);
+      return;
+    }
+
     if (url.pathname === "/api/pages") {
       if (request.method === "GET") {
         await sendJson(response, await listPages());
@@ -59,12 +67,19 @@ async function handleRequest(request, response) {
     const generateMatch = url.pathname.match(/^\/api\/pages\/([^/]+)\/generate$/);
     if (generateMatch && request.method === "POST") {
       const body = await readJsonBody(request);
-      const result = await generatePageWorkflow({
-        debug: Boolean(body.debug),
-        model: body.model,
-        page: generateMatch[1]
+      const job = createStudioJob({
+        label: "Generate page",
+        page: generateMatch[1],
+        type: "generate",
+        task: ({ onProgress }) =>
+          generatePageWorkflow({
+            debug: Boolean(body.debug),
+            model: body.model,
+            onProgress,
+            page: generateMatch[1]
+          })
       });
-      await sendJson(response, result);
+      await sendJson(response, job, 202);
       return;
     }
 
@@ -77,12 +92,19 @@ async function handleRequest(request, response) {
     const optimizeMatch = url.pathname.match(/^\/api\/pages\/([^/]+)\/optimize$/);
     if (optimizeMatch && request.method === "POST") {
       const body = await readJsonBody(request);
-      const result = await optimizePageWorkflow({
-        maxRounds: body.maxRounds ?? 1,
-        note: body.note ?? "",
-        page: optimizeMatch[1]
+      const job = createStudioJob({
+        label: "Optimize page",
+        page: optimizeMatch[1],
+        type: "optimize",
+        task: ({ onProgress }) =>
+          optimizePageWorkflow({
+            maxRounds: body.maxRounds ?? 1,
+            note: body.note ?? "",
+            onProgress,
+            page: optimizeMatch[1]
+          })
       });
-      await sendJson(response, result);
+      await sendJson(response, job, 202);
       return;
     }
 

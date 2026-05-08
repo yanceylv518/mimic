@@ -29,6 +29,7 @@
 | 5F | 迭代接受 / 回退 | 已完成 | `iteration:accept` 与 `iteration:reject` |
 | 6A | 本地 Web UI 产品雏形 | 已完成 | `studio:dev` 提供页面、迭代和 A/B/C 操作界面 |
 | 6B | 上传截图与生成入口 | 已完成 | Studio 支持上传截图、创建任务、一键生成页面 |
+| 6C | 生成进度与错误展示 | 已完成 | Studio job 轮询展示生成 / 优化进度和错误 |
 | 6D | 项目偏好 / 全局规则 | 已完成 | `project-rules/dashboard.md` 自动注入模型链路 |
 | 6 | MVP1 交付文档 | 已完成 | 中英文交付说明 |
 
@@ -400,7 +401,49 @@ src/workflows/generate-page-workflow.mjs
 
 ## 下一步建议
 
-下一步建议进入 **Step 6C：生成进度与错误展示**。
+## Step 6C：生成进度与错误展示
+
+新增内存 job 管理：
+
+```text
+src/lib/studio-jobs.mjs
+```
+
+新增接口：
+
+```text
+GET /api/jobs/:jobId
+```
+
+改造行为：
+
+- `POST /api/pages/:pageId/generate` 不再等待长流程结束，立即返回 job。
+- `POST /api/pages/:pageId/optimize` 不再等待长流程结束，立即返回 job。
+- Studio 前端轮询 job 状态。
+- UI 会显示当前任务、当前步骤、步骤状态。
+- 失败时显示错误原因。
+
+当前可见步骤：
+
+```text
+analyze:auto
+render:ai
+preview:build
+validate:visual
+iteration-xxx: feedback
+iteration-xxx: patch
+```
+
+当前验收：
+
+- Studio 页面可正常打开。
+- 不存在页面的 generate job 会返回 `failed` 和错误原因。
+- `generatePageWorkflow` dry-run 通过。
+- `preview:build` 通过。
+
+## 下一步建议
+
+下一步建议进入 **Step 7A：组件沉淀基础**。
 
 当前“上传并生成页面”是一个长请求。下一步应该把它拆成可观察任务状态，至少在 UI 中展示当前执行到分析、渲染、构建还是验证，以及失败原因。
 

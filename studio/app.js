@@ -70,7 +70,7 @@ async function refreshPage() {
 
 async function optimize() {
   await runAction(async () => {
-    await fetchJson(`/api/pages/${state.pageId}/optimize`, {
+    const job = await fetchJson(`/api/pages/${state.pageId}/optimize`, {
       body: JSON.stringify({
         maxRounds: 1,
         note: elements.noteInput.value.trim()
@@ -80,6 +80,7 @@ async function optimize() {
       },
       method: "POST"
     });
+    await waitForJob(job.id);
   }, "正在优化，这可能需要几分钟...");
 }
 
@@ -104,13 +105,14 @@ async function uploadAndGenerate() {
       method: "POST"
     });
     state.pageId = created.pageId;
-    await fetchJson(`/api/pages/${created.pageId}/generate`, {
+    const job = await fetchJson(`/api/pages/${created.pageId}/generate`, {
       body: JSON.stringify({}),
       headers: {
         "Content-Type": "application/json"
       },
       method: "POST"
     });
+    await waitForJob(job.id);
     await refresh();
   }, "正在上传并生成页面，这可能需要几分钟...");
 }
@@ -158,6 +160,23 @@ async function runAction(action, pendingText) {
     elements.actionStatus.textContent = error instanceof Error ? error.message : String(error);
   } finally {
     setBusy(false);
+  }
+}
+
+async function waitForJob(jobId) {
+  while (true) {
+    const job = await fetchJson(`/api/jobs/${jobId}`);
+    elements.actionStatus.textContent = formatJobStatus(job);
+
+    if (job.status === "passed") {
+      return job;
+    }
+
+    if (job.status === "failed") {
+      throw new Error(job.error ?? "任务失败");
+    }
+
+    await delay(1200);
   }
 }
 
@@ -236,6 +255,18 @@ function setBusy(isBusy, text = "") {
     button.disabled = isBusy;
   }
   elements.actionStatus.textContent = text;
+}
+
+function formatJobStatus(job) {
+  const step = job.step ? ` · ${job.step}` : "";
+  const stepStatus = job.stepStatus ? ` · ${job.stepStatus}` : "";
+  return `${job.label}${step}${stepStatus}`;
+}
+
+function delay(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
 
 function readFileAsDataUrl(file) {

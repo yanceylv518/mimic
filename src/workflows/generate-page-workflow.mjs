@@ -9,6 +9,7 @@ export async function generatePageWorkflow({
   debug = false,
   dryRun = false,
   model,
+  onProgress = () => {},
   page
 }) {
   if (!page) {
@@ -37,19 +38,19 @@ export async function generatePageWorkflow({
   };
 
   try {
-    await runStep(result, "analyze:auto", async () => {
+    await runStep(result, "analyze:auto", onProgress, async () => {
       await analyzeAutoCommand(compact(["--page", page, model ? "--model" : "", model ?? "", debug ? "--debug" : ""]));
     });
 
-    await runStep(result, "render:ai", async () => {
+    await runStep(result, "render:ai", onProgress, async () => {
       await renderAiCommand(compact(["--page", page, model ? "--model" : "", model ?? "", debug ? "--debug" : ""]));
     });
 
-    await runStep(result, "preview:build", async () => {
+    await runStep(result, "preview:build", onProgress, async () => {
       await runCommand(buildCommand().command, buildCommand().args, { cwd: root });
     });
 
-    await runStep(result, "validate:visual", async () => {
+    await runStep(result, "validate:visual", onProgress, async () => {
       await runCommand(process.execPath, ["scripts/visual-compare.mjs", "--page", page], { cwd: root });
     });
 
@@ -66,7 +67,7 @@ export async function generatePageWorkflow({
   return result;
 }
 
-async function runStep(result, name, task) {
+async function runStep(result, name, onProgress, task) {
   const step = {
     finishedAt: null,
     name,
@@ -74,13 +75,26 @@ async function runStep(result, name, task) {
     status: "running"
   };
   result.steps.push(step);
+  onProgress({
+    step: name,
+    stepStatus: "running"
+  });
 
   try {
     await task();
     step.status = "passed";
+    onProgress({
+      step: name,
+      stepStatus: "passed"
+    });
   } catch (error) {
     step.status = "failed";
     step.error = error instanceof Error ? error.message : String(error);
+    onProgress({
+      error: step.error,
+      step: name,
+      stepStatus: "failed"
+    });
     throw error;
   } finally {
     step.finishedAt = new Date().toISOString();
