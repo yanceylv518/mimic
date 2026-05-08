@@ -125,7 +125,7 @@ function renderIterations(iterations) {
       (iteration) => `
         <article class="iteration">
           <div>
-            <h3>${escapeHtml(iteration.iteration)} · ${escapeHtml(iteration.status)}</h3>
+            <h3>${escapeHtml(iteration.iteration)} · ${escapeHtml(labelForIteration(iteration))}</h3>
             <p class="iteration-meta">${escapeHtml(iteration.note ?? "无人工提示")}</p>
             <p class="iteration-meta">
               <a href="${iteration.artifacts.before}" target="_blank" rel="noreferrer">before</a>
@@ -143,7 +143,8 @@ function renderIterations(iterations) {
                 ? `<button type="button" data-action="accept" data-iteration="${escapeHtml(iteration.iteration)}">A 接受</button>
             <button class="secondary" type="button" data-action="optimize">B 继续</button>
             <button class="danger" type="button" data-action="reject" data-iteration="${escapeHtml(iteration.iteration)}">C 回退</button>`
-                : `<button class="secondary" type="button" data-action="optimize">B 继续</button>`
+                : `<span class="decision">${escapeHtml(decisionText(iteration))}</span>
+            <button class="secondary" type="button" data-action="optimize">B 继续</button>`
             }
           </div>
         </article>
@@ -185,6 +186,30 @@ async function fetchJson(url, options) {
   }
 
   return payload;
+}
+
+function labelForIteration(iteration) {
+  if (iteration.decisionAction === "accept") {
+    return `${iteration.status} · 已接受`;
+  }
+
+  if (iteration.decisionAction === "reject") {
+    return `${iteration.status} · 已回退`;
+  }
+
+  return iteration.status;
+}
+
+function decisionText(iteration) {
+  if (iteration.decisionAction === "accept") {
+    return "已接受";
+  }
+
+  if (iteration.decisionAction === "reject") {
+    return "已回退";
+  }
+
+  return iteration.status === "passed" ? "已处理" : "不可决策";
 }
 
 function withCache(url) {

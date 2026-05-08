@@ -178,8 +178,9 @@ async function listIterations(pageId) {
         feedback: artifactUrl(`validation/${pageId}/iterations/${entry.name}/feedback.md`),
         result: artifactUrl(`validation/${pageId}/iterations/${entry.name}/result.json`)
       },
-      canDecide: result?.status === "passed",
+      canDecide: result?.status === "passed" && !decision,
       decision,
+      decisionAction: decision?.action ?? null,
       iteration: entry.name,
       note: result?.note ?? null,
       status: result?.status ?? "unknown"
