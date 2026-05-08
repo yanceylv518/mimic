@@ -9,6 +9,7 @@
     "analyze": "node src/cli.mjs analyze",
     "analyze:auto": "node src/cli.mjs analyze:auto",
     "cli": "node src/cli.mjs",
+    "components:extract": "node src/cli.mjs components:extract",
     "feedback:ai": "node src/cli.mjs feedback:ai",
     "generate": "node src/cli.mjs generate",
     "iteration:accept": "node src/cli.mjs iteration:accept",

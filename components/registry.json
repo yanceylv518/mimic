@@ -1,0 +1,206 @@
+{
+  "schemaVersion": 1,
+  "components": [
+    {
+      "description": "Full-width app shell with left navigation, fluid main content, and optional right utility sidebar.",
+      "id": "dashboard-shell",
+      "name": "Dashboard Shell",
+      "seenInPages": [
+        "page-002"
+      ],
+      "signals": [
+        "layout.type=dashboard",
+        "columns=260px/1fr/320px"
+      ],
+      "sourceSectionIds": [
+        "header",
+        "sidebar",
+        "hero",
+        "features",
+        "stats",
+        "content",
+        "results",
+        "status",
+        "quick-actions",
+        "assistant"
+      ],
+      "spec": "components/specs/dashboard.json",
+      "createdAt": "2026-05-08T21:12:56.922Z",
+      "lastSeenAt": "2026-05-08T21:12:56.922Z",
+      "maturity": "candidate"
+    },
+    {
+      "description": "Primary recommendation panel with badge, title, rationale, CTAs, and projected benefits.",
+      "id": "hero-recommendation",
+      "name": "Hero Recommendation",
+      "seenInPages": [
+        "page-002"
+      ],
+      "signals": [
+        "section.type=hero",
+        "section.region=main",
+        "今日 AI 建议",
+        "优先制作 2 条 AI 工具实操内容",
+        "推荐方向：OpenClaw 自动发布、小红书流程自动化",
+        "推荐原因：近期相关情报增长明显，历史发布效果良好",
+        "开始生成内容",
+        "查看推荐依据"
+      ],
+      "sourceSectionIds": [
+        "hero"
+      ],
+      "spec": "components/specs/dashboard.json",
+      "createdAt": "2026-05-08T21:12:56.922Z",
+      "lastSeenAt": "2026-05-08T21:12:56.922Z",
+      "maturity": "candidate"
+    },
+    {
+      "description": "Compact operational metrics with number, label, trend, and accent glow.",
+      "id": "metric-card-row",
+      "name": "Metric Card Row",
+      "seenInPages": [
+        "page-002"
+      ],
+      "signals": [
+        "section.type=content",
+        "section.region=main",
+        "正在生成",
+        "1",
+        "1个任务进行中",
+        "待发布",
+        "2",
+        "条内容待发布"
+      ],
+      "sourceSectionIds": [
+        "stats"
+      ],
+      "spec": "components/specs/dashboard.json",
+      "createdAt": "2026-05-08T21:12:56.922Z",
+      "lastSeenAt": "2026-05-08T21:12:56.922Z",
+      "maturity": "candidate"
+    },
+    {
+      "description": "Repeated opportunity cards with index, title, source, tag, and actions.",
+      "id": "opportunity-card-grid",
+      "name": "Opportunity Card Grid",
+      "seenInPages": [
+        "page-002"
+      ],
+      "signals": [
+        "section.type=features",
+        "section.region=main",
+        "今日机会（最多 3 个）",
+        "查看全部机会",
+        "01 OpenClaw 自动发布全流程",
+        "来源：情报库",
+        "热度上升",
+        "生成发布包"
+      ],
+      "sourceSectionIds": [
+        "features"
+      ],
+      "spec": "components/specs/dashboard.json",
+      "createdAt": "2026-05-08T21:12:56.922Z",
+      "lastSeenAt": "2026-05-08T21:12:56.922Z",
+      "maturity": "candidate"
+    },
+    {
+      "description": "Right rail shortcut grid for common actions.",
+      "id": "quick-action-grid",
+      "name": "Quick Action Grid",
+      "seenInPages": [
+        "page-002"
+      ],
+      "signals": [
+        "section.type=features",
+        "section.region=right",
+        "快捷入口",
+        "新建发布包",
+        "新建任务",
+        "情报库",
+        "知识库",
+        "流程编排"
+      ],
+      "sourceSectionIds": [
+        "quick-actions"
+      ],
+      "spec": "components/specs/dashboard.json",
+      "createdAt": "2026-05-08T21:12:56.922Z",
+      "lastSeenAt": "2026-05-08T21:12:56.922Z",
+      "maturity": "candidate"
+    },
+    {
+      "description": "Persistent left-side product navigation with brand block and vertical module links.",
+      "id": "sidebar-nav",
+      "name": "Sidebar Navigation",
+      "seenInPages": [
+        "page-002"
+      ],
+      "signals": [
+        "section.type=sidebar",
+        "section.region=left",
+        "小龙虾后台",
+        "AI 内容生产系统",
+        "总览",
+        "任务运行",
+        "工作流",
+        "爆款拆解"
+      ],
+      "sourceSectionIds": [
+        "sidebar"
+      ],
+      "spec": "components/specs/dashboard.json",
+      "createdAt": "2026-05-08T21:12:56.922Z",
+      "lastSeenAt": "2026-05-08T21:12:56.922Z",
+      "maturity": "candidate"
+    },
+    {
+      "description": "Right rail system status card with service rows and small badges.",
+      "id": "status-list",
+      "name": "Status List",
+      "seenInPages": [
+        "page-002"
+      ],
+      "signals": [
+        "section.type=sidebar",
+        "section.region=right",
+        "系统状态",
+        "一切正常",
+        "本地 API",
+        "在线",
+        "Hermes 引擎",
+        "可用"
+      ],
+      "sourceSectionIds": [
+        "status"
+      ],
+      "spec": "components/specs/dashboard.json",
+      "createdAt": "2026-05-08T21:12:56.922Z",
+      "lastSeenAt": "2026-05-08T21:12:56.922Z",
+      "maturity": "candidate"
+    },
+    {
+      "description": "Search and utility action row. Utility controls must align to the correct parent grid scope.",
+      "id": "top-toolbar",
+      "name": "Top Toolbar",
+      "seenInPages": [
+        "page-002"
+      ],
+      "signals": [
+        "section.type=header",
+        "section.region=top",
+        "搜索任务、发布包、知识库…",
+        "刷新",
+        "设置",
+        "系统正常"
+      ],
+      "sourceSectionIds": [
+        "header"
+      ],
+      "spec": "components/specs/dashboard.json",
+      "createdAt": "2026-05-08T21:12:56.922Z",
+      "lastSeenAt": "2026-05-08T21:12:56.922Z",
+      "maturity": "candidate"
+    }
+  ]
+}

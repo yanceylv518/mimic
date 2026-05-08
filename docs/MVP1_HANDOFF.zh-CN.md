@@ -167,6 +167,7 @@ PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 - 能通过 Studio 上传截图并触发生成 workflow。
 - 能在 Studio 中看到生成 / 优化 job 的当前步骤和失败原因。
 - 能把 dashboard 经验沉淀为全局规则，并自动注入生成 / 反馈 / 补丁链路。
+- 能从 `analysis.json` 提取可复用组件候选，并在 Studio 中查看。
 
 ## 当前限制
 
@@ -174,7 +175,7 @@ PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 - 模型生成结果仍需要人工对照和迭代。
 - 视觉验证报告目前是人工对比，不是自动评分。
 - 当前 job 状态是内存态，Studio 重启后历史 job 状态会丢失，但文件产物仍保留。
-- 还没有组件沉淀能力。
+- 组件目前只是候选登记，还没有拆成共享 React 组件。
 
 ## 项目规则
 
@@ -193,6 +194,6 @@ project-rules/dashboard.md
 
 ## 下一步建议
 
-建议进入 **Step 7A：组件沉淀基础**。
+建议进入 **Step 7B：组件规则注入生成链路**。
 
-也就是开始把已接受页面里的 Sidebar、Topbar、StatusCard、QuickActionGrid 等结构沉淀成可复用组件。
+也就是让后续页面生成时读取 `components/registry.json`，优先复用已经沉淀的 dashboard 结构模式。

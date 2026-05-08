@@ -4,6 +4,7 @@ const state = {
 
 const elements = {
   actionStatus: document.querySelector("#actionStatus"),
+  componentsList: document.querySelector("#componentsList"),
   generatedImage: document.querySelector("#generatedImage"),
   iterations: document.querySelector("#iterations"),
   noteInput: document.querySelector("#noteInput"),
@@ -31,18 +32,21 @@ await bootstrap();
 async function bootstrap() {
   const payload = await fetchJson("/api/pages");
   const rulesPayload = await fetchJson("/api/rules");
+  const componentsPayload = await fetchJson("/api/components");
   elements.pageId.innerHTML = payload.pages
     .map((page) => `<option value="${escapeHtml(page.pageId)}">${escapeHtml(page.pageId)}</option>`)
     .join("");
   state.pageId = payload.pages.at(-1)?.pageId ?? "";
   elements.pageId.value = state.pageId;
   renderRules(rulesPayload.rules);
+  renderComponents(componentsPayload.components);
   await refreshPage();
 }
 
 async function refresh() {
   const payload = await fetchJson("/api/pages");
   const rulesPayload = await fetchJson("/api/rules");
+  const componentsPayload = await fetchJson("/api/components");
   const selected = state.pageId;
   elements.pageId.innerHTML = payload.pages
     .map((page) => `<option value="${escapeHtml(page.pageId)}">${escapeHtml(page.pageId)}</option>`)
@@ -52,6 +56,7 @@ async function refresh() {
     : payload.pages.at(-1)?.pageId ?? "";
   elements.pageId.value = state.pageId;
   renderRules(rulesPayload.rules);
+  renderComponents(componentsPayload.components);
   await refreshPage();
 }
 
@@ -245,6 +250,19 @@ function renderRules(rules) {
         )
         .join("")
     : `<div class="rule-item">暂无规则</div>`;
+}
+
+function renderComponents(components) {
+  elements.componentsList.innerHTML = components.length
+    ? components
+        .slice()
+        .sort((left, right) => left.id.localeCompare(right.id))
+        .map(
+          (component) =>
+            `<div class="rule-item" title="${escapeHtml(component.description)}">${escapeHtml(component.name)} · ${escapeHtml(component.maturity)}</div>`
+        )
+        .join("")
+    : `<div class="rule-item">暂无组件候选</div>`;
 }
 
 function setBusy(isBusy, text = "") {

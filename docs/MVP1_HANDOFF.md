@@ -118,6 +118,7 @@ Studio can also upload a screenshot and run the generation workflow from the UI.
 - Studio can upload a screenshot and trigger the generation workflow.
 - Studio can show job progress and failure reasons for generation and optimization.
 - Project-level dashboard rules are injected into generation, feedback, and patch workflows.
+- Component candidates can be extracted from `analysis.json` and viewed in Studio.
 - The preview app builds and runs locally.
 
 ## Important Limitation
@@ -131,6 +132,8 @@ AI patching is intentionally single-step. It applies one controlled TSX rewrite,
 Optimization workflows are recorded locally. Accept/reject commands now sync the chosen TSX and write `decision.json`.
 
 Studio job state is currently in memory. Restarting Studio clears job status, but generated files and iteration artifacts remain on disk.
+
+Component extraction is metadata-first. Shared React component implementation is not enabled yet.
 
 Enabled project rules:
 
@@ -166,6 +169,6 @@ PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 
 Before moving to MVP2, choose one of these:
 
-1. Start Step 7A: reusable component extraction basics.
+1. Start Step 7B: inject component registry context into generation workflows.
 2. Improve the generation prompt for better dashboard spacing, table density, and sidebar fidelity.
 3. Start MVP2: real project export and reusable component extraction.

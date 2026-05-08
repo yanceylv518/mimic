@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "families": [
+    {
+      "id": "dashboard-shell",
+      "name": "Dashboard Shell",
+      "sectionTypes": ["layout", "dashboard"],
+      "description": "Full-width app shell with left navigation, fluid main content, and optional right utility sidebar.",
+      "reuseSignals": ["left navigation", "main content", "right status sidebar", "full viewport"]
+    },
+    {
+      "id": "sidebar-nav",
+      "name": "Sidebar Navigation",
+      "sectionTypes": ["sidebar", "navigation"],
+      "description": "Persistent left-side product navigation with brand block and vertical module links.",
+      "reuseSignals": ["brand", "nav items", "active item", "account block"]
+    },
+    {
+      "id": "top-toolbar",
+      "name": "Top Toolbar",
+      "sectionTypes": ["header", "toolbar"],
+      "description": "Search and utility action row. Utility controls must align to the correct parent grid scope.",
+      "reuseSignals": ["search input", "refresh", "settings", "system status"]
+    },
+    {
+      "id": "hero-recommendation",
+      "name": "Hero Recommendation",
+      "sectionTypes": ["hero", "banner"],
+      "description": "Primary recommendation panel with badge, title, rationale, CTAs, and projected benefits.",
+      "reuseSignals": ["recommendation", "CTA", "benefit panel", "primary card"]
+    },
+    {
+      "id": "opportunity-card-grid",
+      "name": "Opportunity Card Grid",
+      "sectionTypes": ["card-grid", "cards", "opportunities"],
+      "description": "Repeated opportunity cards with index, title, source, tag, and actions.",
+      "reuseSignals": ["numbered card", "source", "tag", "primary action", "secondary action"]
+    },
+    {
+      "id": "metric-card-row",
+      "name": "Metric Card Row",
+      "sectionTypes": ["stats", "metrics"],
+      "description": "Compact operational metrics with number, label, trend, and accent glow.",
+      "reuseSignals": ["metric number", "status dot", "trend", "three-up row"]
+    },
+    {
+      "id": "status-list",
+      "name": "Status List",
+      "sectionTypes": ["status-list", "status", "right-sidebar"],
+      "description": "Right rail system status card with service rows and small badges.",
+      "reuseSignals": ["system status", "service row", "badge", "online state"]
+    },
+    {
+      "id": "quick-action-grid",
+      "name": "Quick Action Grid",
+      "sectionTypes": ["quick-actions", "shortcut-grid"],
+      "description": "Right rail shortcut grid for common actions.",
+      "reuseSignals": ["shortcut", "quick entry", "two-column grid", "action tile"]
+    }
+  ]
+}

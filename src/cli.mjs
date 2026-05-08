@@ -2,6 +2,7 @@ import { loadEnvFile } from "./lib/env.mjs";
 import { analyzeCommand } from "./commands/analyze.mjs";
 import { analyzeAutoCommand } from "./commands/analyze-auto.mjs";
 import { checkCommand } from "./commands/check.mjs";
+import { componentsExtractCommand } from "./commands/components-extract.mjs";
 import { feedbackAiCommand } from "./commands/feedback-ai.mjs";
 import { generateCommand } from "./commands/generate.mjs";
 import { iterationAcceptCommand, iterationRejectCommand } from "./commands/iteration-decision.mjs";
@@ -19,6 +20,7 @@ const commands = {
   analyze: analyzeCommand,
   "analyze:auto": analyzeAutoCommand,
   check: checkCommand,
+  "components:extract": componentsExtractCommand,
   "feedback:ai": feedbackAiCommand,
   generate: generateCommand,
   "iteration:accept": iterationAcceptCommand,
@@ -53,6 +55,7 @@ Usage:
   npm run analyze -- --page page-001 --template
   npm run analyze:auto -- --page page-001
   npm run cli -- check
+  npm run components:extract -- --page page-001
   npm run feedback:ai -- --page page-001
   npm run generate -- --image input/screenshot.png
   npm run iteration:accept -- --page page-001 --iteration 1
@@ -66,6 +69,7 @@ Commands:
   analyze       Write analysis.json for a generated page.
   analyze:auto  Use a vision model to generate analysis.json from screenshot.png.
   check         Verify required project paths.
+  components:extract  Extract reusable component candidates from analysis.json.
   feedback:ai   Use a vision model to compare source and generated screenshots.
   generate      Create a generated page folder from one screenshot.
   iteration:accept  Accept one optimization iteration.

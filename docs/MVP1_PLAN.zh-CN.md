@@ -31,6 +31,7 @@
 | 6B | 上传截图与生成入口 | 已完成 | Studio 支持上传截图、创建任务、一键生成页面 |
 | 6C | 生成进度与错误展示 | 已完成 | Studio job 轮询展示生成 / 优化进度和错误 |
 | 6D | 项目偏好 / 全局规则 | 已完成 | `project-rules/dashboard.md` 自动注入模型链路 |
+| 7A | 组件沉淀基础 | 已完成 | `components/registry.json` 登记可复用组件候选 |
 | 6 | MVP1 交付文档 | 已完成 | 中英文交付说明 |
 
 ## 关键说明
@@ -399,8 +400,6 @@ src/workflows/generate-page-workflow.mjs
 - Studio 页面能看到上传区域。
 - Studio API 仍能返回已有页面列表。
 
-## 下一步建议
-
 ## Step 6C：生成进度与错误展示
 
 新增内存 job 管理：
@@ -441,12 +440,6 @@ iteration-xxx: patch
 - `generatePageWorkflow` dry-run 通过。
 - `preview:build` 通过。
 
-## 下一步建议
-
-下一步建议进入 **Step 7A：组件沉淀基础**。
-
-当前“上传并生成页面”是一个长请求。下一步应该把它拆成可观察任务状态，至少在 UI 中展示当前执行到分析、渲染、构建还是验证，以及失败原因。
-
 ## Step 6D：项目偏好 / 全局规则
 
 新增规则文件：
@@ -483,6 +476,45 @@ Studio 会在侧栏显示当前启用规则。
 - `/api/rules` 可以返回 `dashboard.md`。
 - Studio 页面能显示 `dashboard.md`。
 
+## Step 7A：组件沉淀基础
+
+新增组件登记目录：
+
+```text
+components/
+  README.md
+  registry.json
+  specs/dashboard.json
+```
+
+新增命令：
+
+```bash
+npm run components:extract -- --page page-002
+```
+
+当前会从 `analysis.json` 提取组件候选：
+
+```text
+Dashboard Shell
+Sidebar Navigation
+Top Toolbar
+Hero Recommendation
+Opportunity Card Grid
+Metric Card Row
+Status List
+Quick Action Grid
+```
+
+当前原则：
+
+- MVP1 阶段先做 metadata-first，不强行拆真实 React 组件。
+- 组件成熟度从 `candidate` 开始。
+- 至少两个 accepted 页面复用相同模式后，再进入共享代码实现。
+- Studio 侧栏会显示当前组件候选。
+
 ## 下一步建议
 
-下一步建议进入 **Step 6C：生成进度与错误展示**。
+下一步建议进入 **Step 7B：组件规则注入生成链路**。
+
+也就是让 `render:ai` 在生成新页面时能参考 `components/registry.json`，优先复用已登记的 dashboard 结构模式。

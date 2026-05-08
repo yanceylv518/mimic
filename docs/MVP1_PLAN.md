@@ -51,6 +51,7 @@ MVP1 excludes:
 | 6B | Upload and generate entry | Done | Studio can upload a screenshot, create a task, and run generation workflow |
 | 6C | Progress and errors | Done | Studio polls jobs for generation/optimization progress and failures |
 | 6D | Project rules | Done | `project-rules/dashboard.md` is injected into model workflows |
+| 7A | Component registry basics | Done | `components/registry.json` records reusable component candidates |
 | 6 | Local preview and MVP1 handoff | Done | Full screenshot-to-preview flow and README for generated result |
 
 ## Step 1: Project Skeleton
@@ -874,6 +875,50 @@ Verification:
 npm run preview:build
 Invoke-WebRequest http://127.0.0.1:5180/api/jobs/<job-id>
 ```
+
+## Step 7A: Component Registry Basics
+
+### Objective
+
+Start preserving reusable UI patterns without forcing generated pages to import shared components yet.
+
+### Current Result
+
+Done.
+
+New files:
+
+```text
+components/README.md
+components/registry.json
+components/specs/dashboard.json
+```
+
+New command:
+
+```bash
+npm run components:extract -- --page page-002
+```
+
+Extracted candidates:
+
+```text
+dashboard-shell
+sidebar-nav
+top-toolbar
+hero-recommendation
+opportunity-card-grid
+metric-card-row
+status-list
+quick-action-grid
+```
+
+Notes:
+
+- Components start as `candidate`.
+- Generated pages remain self-contained in MVP1.
+- Shared code extraction should wait until patterns appear in at least two accepted pages.
+- Studio exposes the current registry through `GET /api/components`.
 
 ## Update Rule
 

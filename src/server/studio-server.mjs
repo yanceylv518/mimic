@@ -3,6 +3,7 @@ import { mkdir, readdir, readFile, stat } from "node:fs/promises";
 import http from "node:http";
 import path from "node:path";
 import { loadEnvFile } from "../lib/env.mjs";
+import { readComponentRegistry } from "../lib/component-registry.mjs";
 import { createStudioJob, getStudioJob } from "../lib/studio-jobs.mjs";
 import { createPageFromImageWorkflow, saveUploadedImageWorkflow } from "../workflows/create-page-workflow.mjs";
 import { generatePageWorkflow } from "../workflows/generate-page-workflow.mjs";
@@ -33,6 +34,11 @@ async function handleRequest(request, response) {
       await sendJson(response, {
         rules: await listProjectRules()
       });
+      return;
+    }
+
+    if (url.pathname === "/api/components" && request.method === "GET") {
+      await sendJson(response, await readComponentRegistry());
       return;
     }
 
