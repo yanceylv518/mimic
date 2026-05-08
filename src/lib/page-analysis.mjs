@@ -10,6 +10,11 @@ export function createAnalysisTemplate(pageId) {
       width: null,
       height: null
     },
+    layout: {
+      type: "unknown",
+      columns: [],
+      density: ""
+    },
     sections: [],
     theme: {
       colors: [],
@@ -25,6 +30,9 @@ export function validatePageAnalysis(analysis) {
   assertObject(analysis, "analysis");
   assertString(analysis.pageType, "pageType");
   assertArray(analysis.sections, "sections");
+  if ("layout" in analysis) {
+    assertObject(analysis.layout, "layout");
+  }
   assertObject(analysis.theme, "theme");
 
   for (const key of requiredThemeKeys) {
@@ -44,6 +52,9 @@ export function validatePageAnalysis(analysis) {
     }
     if ("description" in section) {
       assertString(section.description, "section.description");
+    }
+    if ("position" in section) {
+      assertObject(section.position, "section.position");
     }
   }
 }

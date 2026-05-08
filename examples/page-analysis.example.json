@@ -7,6 +7,11 @@
     "width": 1440,
     "height": 1024
   },
+  "layout": {
+    "type": "landing-page",
+    "columns": ["1fr"],
+    "density": "spacious"
+  },
   "sections": [
     {
       "id": "header",
@@ -14,6 +19,14 @@
       "title": "Top navigation",
       "description": "Horizontal navigation with brand, links, and a primary action.",
       "layout": "horizontal",
+      "position": {
+        "region": "top",
+        "order": 1,
+        "width": "full",
+        "height": "auto",
+        "importance": "utility",
+        "density": "medium"
+      },
       "elements": ["brand", "nav-links", "primary-action"],
       "style": {
         "background": "#ffffff",
@@ -29,6 +42,14 @@
       "title": "Marketing hero",
       "description": "Centered hero content with headline, supporting text, and call-to-action buttons.",
       "layout": "centered",
+      "position": {
+        "region": "main",
+        "order": 1,
+        "width": "full",
+        "height": "auto",
+        "importance": "primary",
+        "density": "spacious"
+      },
       "elements": ["eyebrow", "headline", "paragraph", "cta-group"],
       "style": {
         "background": "#f8fafc",
@@ -44,6 +65,14 @@
       "title": "Feature grid",
       "description": "Three-column feature card section.",
       "layout": "three-column",
+      "position": {
+        "region": "main",
+        "order": 2,
+        "width": "full",
+        "height": "auto",
+        "importance": "secondary",
+        "density": "medium"
+      },
       "elements": ["feature-card", "feature-card", "feature-card"],
       "style": {
         "background": "#ffffff",

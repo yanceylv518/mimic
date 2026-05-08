@@ -25,25 +25,48 @@ export function generateReactPage(analysis) {
 }
 
 function generateDashboardPage(analysis, sections) {
-  const sidebarSections = sections.filter((section) => section.type === "sidebar");
-  const headerSection = sections.find((section) => section.type === "header");
-  const heroSection = sections.find((section) => section.type === "hero");
-  const mainSections = sections.filter(
-    (section) => !["sidebar", "header", "hero"].includes(section.type)
+  const sidebarSections = sections.filter(
+    (section) => section.position?.region === "left" || section.type === "sidebar"
   );
-  const rightSections = sidebarSections.slice(1);
-  const leftSidebar = sidebarSections[0] ?? fallbackSection("sidebar");
+  const headerSection = sections.find(
+    (section) => section.position?.region === "top" || section.type === "header"
+  );
+  const heroSection =
+    sections.find((section) => section.position?.importance === "primary") ??
+    sections.find((section) => section.type === "hero");
+  const mainSections = sections.filter(
+    (section) =>
+      section !== headerSection &&
+      section !== heroSection &&
+      section.position?.region !== "left" &&
+      section.position?.region !== "right" &&
+      section.type !== "sidebar"
+  ).sort(byPositionOrder);
+  const rightSections = sections
+    .filter((section) => section.position?.region === "right")
+    .sort(byPositionOrder);
+  const leftSidebar =
+    sidebarSections.find((section) => section.position?.region === "left") ??
+    sidebarSections[0] ??
+    fallbackSection("sidebar");
+  const layoutColumns = normalizeColumns(analysis.layout?.columns);
+  const pageDensity = analysis.layout?.density || "medium";
 
   return `const leftSidebar = ${JSON.stringify(leftSidebar, null, 2)};
 const headerSection = ${JSON.stringify(headerSection ?? fallbackSection("header"), null, 2)};
 const heroSection = ${JSON.stringify(heroSection ?? fallbackSection("hero"), null, 2)};
 const mainSections = ${JSON.stringify(mainSections, null, 2)};
 const rightSections = ${JSON.stringify(rightSections, null, 2)};
+const layoutColumns = ${JSON.stringify(layoutColumns)};
+const pageDensity: string = ${JSON.stringify(pageDensity)};
 
 export default function GeneratedPage() {
   return (
     <main className="min-h-screen bg-[#070b12] text-slate-100">
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)_300px]">
+      <div
+        className="hidden min-h-screen lg:grid"
+        style={{ gridTemplateColumns: layoutColumns.join(" ") }}
+      >
         <aside className="border-r border-white/10 bg-[#0b1220] px-5 py-6">
           <div className="mb-8">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-500 text-lg font-bold shadow-lg shadow-blue-500/20">
@@ -55,7 +78,7 @@ export default function GeneratedPage() {
           <ElementList elements={leftSidebar.elements || []} variant="nav" />
         </aside>
 
-        <section className="min-w-0 bg-[#0a101a] px-5 py-6 lg:px-8">
+        <section className={pageDensity === "compact" ? "min-w-0 bg-[#0a101a] px-5 py-5" : "min-w-0 bg-[#0a101a] px-5 py-6 lg:px-8"}>
           <TopBar section={headerSection} />
           <Hero section={heroSection} summary="${escapeAttribute(analysis.summary || "")}" />
           <div className="mt-6 grid gap-5 xl:grid-cols-2">
@@ -77,6 +100,17 @@ export default function GeneratedPage() {
           </div>
         </aside>
       </div>
+      <div className="block lg:hidden">
+        <section className="bg-[#0a101a] px-5 py-5">
+          <TopBar section={headerSection} />
+          <Hero section={heroSection} summary="${escapeAttribute(analysis.summary || "")}" />
+          <div className="mt-6 flex flex-col gap-5">
+            {[leftSidebar, ...mainSections, ...rightSections].map((section, index) => (
+              <Panel key={section.id + "-mobile-" + index} section={section} compact />
+            ))}
+          </div>
+        </section>
+      </div>
     </main>
   );
 }
@@ -87,6 +121,14 @@ type Section = {
   title?: string;
   description?: string;
   layout?: string;
+  position?: {
+    region?: string;
+    order?: number;
+    width?: string;
+    height?: string;
+    importance?: string;
+    density?: string;
+  };
   elements?: string[];
   style?: {
     background?: string;
@@ -161,10 +203,11 @@ function Panel({ section, compact = false }: { section: Section; compact?: boole
   const background = section.style?.background || "#0f1726";
   const borderClass = borderToClass(section.style?.border);
   const radiusClass = radiusToClass(section.style?.radius);
+  const importanceClass = importanceToClass(section.position?.importance, compact);
 
   return (
     <section
-      className={radiusClass + " " + borderClass + " p-5 shadow-xl shadow-black/20"}
+      className={radiusClass + " " + borderClass + " " + importanceClass + " shadow-xl shadow-black/20"}
       style={{ backgroundColor: background }}
     >
       <div className="mb-4 flex items-center justify-between gap-4">
@@ -255,6 +298,22 @@ function radiusToClass(radius?: string) {
   }
 
   return "rounded-xl";
+}
+
+function importanceToClass(importance?: string, compact?: boolean) {
+  if (compact) {
+    return "p-4";
+  }
+
+  if (importance === "primary") {
+    return "p-6 xl:col-span-2";
+  }
+
+  if (importance === "utility") {
+    return "p-4";
+  }
+
+  return "p-5";
 }
 `;
 }
@@ -385,6 +444,14 @@ function fallbackSection(pageType) {
     id: "content",
     type: "content",
     layout: "stacked",
+    position: {
+      region: "main",
+      order: 1,
+      width: "full",
+      height: "auto",
+      importance: "secondary",
+      density: "medium"
+    },
     elements: [pageType || "unknown"],
     style: {
       background: "#ffffff",
@@ -399,4 +466,26 @@ function escapeAttribute(value) {
     .replaceAll('"', "&quot;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;");
+}
+
+function byPositionOrder(a, b) {
+  return (a.position?.order ?? 999) - (b.position?.order ?? 999);
+}
+
+function normalizeColumns(columns) {
+  if (!Array.isArray(columns) || columns.length === 0) {
+    return ["260px", "minmax(0,1fr)", "300px"];
+  }
+
+  if (columns.length === 1) {
+    return [columns[0]];
+  }
+
+  return columns.map((column) => {
+    if (column === "1fr") {
+      return "minmax(0,1fr)";
+    }
+
+    return column;
+  });
 }

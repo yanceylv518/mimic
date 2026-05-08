@@ -1,5 +1,5 @@
 const leftSidebar = {
-  "description": "Left vertical navigation sidebar with brand, main menu items, and user profile at the bottom.",
+  "description": "Persistent left navigation with product branding and a vertical list of modules.",
   "elements": [
     "小龙虾后台",
     "AI 内容生产系统",
@@ -20,18 +20,26 @@ const leftSidebar = {
   ],
   "id": "sidebar",
   "layout": "stacked",
+  "position": {
+    "density": "medium",
+    "height": "full",
+    "importance": "utility",
+    "order": 2,
+    "region": "left",
+    "width": "260px"
+  },
   "style": {
-    "background": "#0b1220",
+    "background": "#0a1322",
     "border": "subtle",
-    "foreground": "#e5eefc",
-    "radius": "0px",
+    "foreground": "#d9e4f5",
+    "radius": "12px",
     "spacing": "medium"
   },
   "title": "主导航",
   "type": "sidebar"
 };
 const headerSection = {
-  "description": "Top horizontal bar with a large search input and utility actions on the right.",
+  "description": "Top application bar with global search and utility actions.",
   "elements": [
     "搜索任务、发布包、知识库…",
     "刷新",
@@ -40,18 +48,26 @@ const headerSection = {
   ],
   "id": "header",
   "layout": "two-column",
+  "position": {
+    "density": "compact",
+    "height": "fixed",
+    "importance": "utility",
+    "order": 1,
+    "region": "top",
+    "width": "full"
+  },
   "style": {
-    "background": "#0a1020",
+    "background": "#0b1220",
     "border": "subtle",
-    "foreground": "#eaf1ff",
-    "radius": "12px",
+    "foreground": "#e5eefc",
+    "radius": "0px",
     "spacing": "medium"
   },
-  "title": "顶部工具栏",
+  "title": "Top toolbar",
   "type": "header"
 };
 const heroSection = {
-  "description": "Primary recommendation banner featuring a large AI suggestion, illustration, key recommendation text, CTAs, and expected benefit stats.",
+  "description": "Primary recommendation banner highlighting an AI content opportunity with strong CTA buttons and projected benefits.",
   "elements": [
     "今日 AI 建议",
     "优先制作 2 条 AI 工具实操内容",
@@ -66,9 +82,17 @@ const heroSection = {
   ],
   "id": "hero",
   "layout": "two-column",
+  "position": {
+    "density": "spacious",
+    "height": "auto",
+    "importance": "primary",
+    "order": 1,
+    "region": "main",
+    "width": "fluid"
+  },
   "style": {
-    "background": "#182a63",
-    "border": "subtle",
+    "background": "#182857",
+    "border": "strong",
     "foreground": "#f3f7ff",
     "radius": "16px",
     "spacing": "large"
@@ -78,7 +102,7 @@ const heroSection = {
 };
 const mainSections = [
   {
-    "description": "Main opportunity list showing three highlighted content ideas as compact cards with badges and action buttons.",
+    "description": "Opportunity cards showing three ranked content ideas with source, badges, and quick actions.",
     "elements": [
       "今日机会（最多 3 个）",
       "查看全部机会",
@@ -96,10 +120,18 @@ const mainSections = [
     ],
     "id": "features",
     "layout": "grid",
+    "position": {
+      "density": "medium",
+      "height": "auto",
+      "importance": "primary",
+      "order": 2,
+      "region": "main",
+      "width": "fluid"
+    },
     "style": {
-      "background": "#0f1727",
+      "background": "#111a2b",
       "border": "subtle",
-      "foreground": "#e8f0ff",
+      "foreground": "#e9f0fb",
       "radius": "14px",
       "spacing": "medium"
     },
@@ -107,7 +139,7 @@ const mainSections = [
     "type": "features"
   },
   {
-    "description": "Three summary cards for in-progress, pending publish, and failed tasks with large numeric counts and sparkline-style visuals.",
+    "description": "Three compact KPI cards summarizing generation, pending publish, and failed tasks.",
     "elements": [
       "正在生成",
       "1",
@@ -120,12 +152,20 @@ const mainSections = [
       "1个任务失败",
       "查看并重试"
     ],
-    "id": "content",
+    "id": "stats",
     "layout": "grid",
+    "position": {
+      "density": "compact",
+      "height": "auto",
+      "importance": "secondary",
+      "order": 3,
+      "region": "main",
+      "width": "fluid"
+    },
     "style": {
-      "background": "#0f1727",
+      "background": "#111a2b",
       "border": "subtle",
-      "foreground": "#eef4ff",
+      "foreground": "#edf3ff",
       "radius": "14px",
       "spacing": "medium"
     },
@@ -133,7 +173,7 @@ const mainSections = [
     "type": "content"
   },
   {
-    "description": "Left lower panel listing actionable todo items with status icons and right-aligned buttons.",
+    "description": "Action list of pending items with short descriptions and per-row buttons.",
     "elements": [
       "待处理事项（行动清单）",
       "确认今日选题方向",
@@ -149,12 +189,20 @@ const mainSections = [
       "分析数据表现，总结可复用的爆款要素",
       "查看复盘"
     ],
-    "id": "content-tasks",
+    "id": "content",
     "layout": "stacked",
+    "position": {
+      "density": "medium",
+      "height": "auto",
+      "importance": "primary",
+      "order": 4,
+      "region": "main",
+      "width": "fluid"
+    },
     "style": {
-      "background": "#0f1727",
+      "background": "#111a2b",
       "border": "subtle",
-      "foreground": "#eaf1ff",
+      "foreground": "#e8effc",
       "radius": "14px",
       "spacing": "medium"
     },
@@ -162,7 +210,7 @@ const mainSections = [
     "type": "content"
   },
   {
-    "description": "Right lower main panel showing a recent result card with thumbnail, engagement metrics, and AI summary text.",
+    "description": "Recent result panel with a content thumbnail, engagement metrics, and an AI summary note.",
     "elements": [
       "最近结果（昨日）",
       "查看完整复盘",
@@ -172,15 +220,22 @@ const mainSections = [
       "1.2k 点赞",
       "156 评论",
       "312 收藏",
-      "AI 复盘总结",
-      "标题包含“普通人”更容易引发共鸣，实操步骤清晰，下次增加对比效果和时间收益类内容。"
+      "AI 复盘总结"
     ],
-    "id": "content-results",
+    "id": "results",
     "layout": "stacked",
+    "position": {
+      "density": "medium",
+      "height": "auto",
+      "importance": "secondary",
+      "order": 5,
+      "region": "main",
+      "width": "fluid"
+    },
     "style": {
-      "background": "#0f1727",
+      "background": "#111a2b",
       "border": "subtle",
-      "foreground": "#edf3ff",
+      "foreground": "#eef4ff",
       "radius": "14px",
       "spacing": "medium"
     },
@@ -190,7 +245,7 @@ const mainSections = [
 ];
 const rightSections = [
   {
-    "description": "Right sidebar status panel listing multiple system integrations and health badges, with a button to view all statuses.",
+    "description": "Right rail system health card listing connected services and their statuses.",
     "elements": [
       "系统状态",
       "一切正常",
@@ -208,20 +263,28 @@ const rightSections = [
       "正常",
       "查看所有状态"
     ],
-    "id": "sidebar-status",
+    "id": "status",
     "layout": "stacked",
+    "position": {
+      "density": "medium",
+      "height": "auto",
+      "importance": "secondary",
+      "order": 1,
+      "region": "right",
+      "width": "320px"
+    },
     "style": {
-      "background": "#111827",
+      "background": "#111a2b",
       "border": "subtle",
-      "foreground": "#eef4ff",
-      "radius": "16px",
+      "foreground": "#eaf1fd",
+      "radius": "14px",
       "spacing": "medium"
     },
     "title": "系统状态",
     "type": "sidebar"
   },
   {
-    "description": "Shortcut entry panel with six icon tiles for common actions.",
+    "description": "Quick access grid of icon buttons for common modules.",
     "elements": [
       "快捷入口",
       "新建发布包",
@@ -231,43 +294,64 @@ const rightSections = [
       "流程编排",
       "数据复盘"
     ],
-    "id": "sidebar-shortcuts",
+    "id": "quick-actions",
     "layout": "grid",
+    "position": {
+      "density": "medium",
+      "height": "auto",
+      "importance": "secondary",
+      "order": 2,
+      "region": "right",
+      "width": "320px"
+    },
     "style": {
-      "background": "#111827",
+      "background": "#111a2b",
       "border": "subtle",
-      "foreground": "#ecf2ff",
-      "radius": "16px",
+      "foreground": "#e9f1ff",
+      "radius": "14px",
       "spacing": "medium"
     },
     "title": "快捷入口",
-    "type": "sidebar"
+    "type": "features"
   },
   {
-    "description": "Assistant support card with brief help text, CTA button, and mascot illustration.",
+    "description": "Assistant support card with mascot illustration and a single CTA.",
     "elements": [
       "小龙虾助手",
       "有任何问题，随时召唤我~",
       "立即咨询"
     ],
-    "id": "sidebar-assistant",
+    "id": "assistant",
     "layout": "two-column",
+    "position": {
+      "density": "medium",
+      "height": "auto",
+      "importance": "secondary",
+      "order": 3,
+      "region": "right",
+      "width": "320px"
+    },
     "style": {
-      "background": "#111827",
+      "background": "#111a2b",
       "border": "subtle",
       "foreground": "#eef4ff",
-      "radius": "16px",
+      "radius": "14px",
       "spacing": "medium"
     },
     "title": "小龙虾助手",
-    "type": "sidebar"
+    "type": "content"
   }
 ];
+const layoutColumns = ["260px","minmax(0,1fr)","320px"];
+const pageDensity: string = "medium";
 
 export default function GeneratedPage() {
   return (
     <main className="min-h-screen bg-[#070b12] text-slate-100">
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)_300px]">
+      <div
+        className="hidden min-h-screen lg:grid"
+        style={{ gridTemplateColumns: layoutColumns.join(" ") }}
+      >
         <aside className="border-r border-white/10 bg-[#0b1220] px-5 py-6">
           <div className="mb-8">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-500 text-lg font-bold shadow-lg shadow-blue-500/20">
@@ -279,9 +363,9 @@ export default function GeneratedPage() {
           <ElementList elements={leftSidebar.elements || []} variant="nav" />
         </aside>
 
-        <section className="min-w-0 bg-[#0a101a] px-5 py-6 lg:px-8">
+        <section className={pageDensity === "compact" ? "min-w-0 bg-[#0a101a] px-5 py-5" : "min-w-0 bg-[#0a101a] px-5 py-6 lg:px-8"}>
           <TopBar section={headerSection} />
-          <Hero section={heroSection} summary="A dark-themed AI content operations dashboard with a left navigation rail, top search/action bar, a prominent recommendation hero, opportunity cards, task summaries, actionable work lists, recent performance results, and a right sidebar for system status, shortcuts, and assistant help." />
+          <Hero section={heroSection} summary="A dark Chinese AI operations dashboard with a left navigation sidebar, top toolbar, central recommendation and task management cards, and a right rail for system status and quick actions." />
           <div className="mt-6 grid gap-5 xl:grid-cols-2">
             {mainSections.map((section, index) => (
               <Panel key={section.id + "-" + index} section={section} />
@@ -301,6 +385,17 @@ export default function GeneratedPage() {
           </div>
         </aside>
       </div>
+      <div className="block lg:hidden">
+        <section className="bg-[#0a101a] px-5 py-5">
+          <TopBar section={headerSection} />
+          <Hero section={heroSection} summary="A dark Chinese AI operations dashboard with a left navigation sidebar, top toolbar, central recommendation and task management cards, and a right rail for system status and quick actions." />
+          <div className="mt-6 flex flex-col gap-5">
+            {[leftSidebar, ...mainSections, ...rightSections].map((section, index) => (
+              <Panel key={section.id + "-mobile-" + index} section={section} compact />
+            ))}
+          </div>
+        </section>
+      </div>
     </main>
   );
 }
@@ -311,6 +406,14 @@ type Section = {
   title?: string;
   description?: string;
   layout?: string;
+  position?: {
+    region?: string;
+    order?: number;
+    width?: string;
+    height?: string;
+    importance?: string;
+    density?: string;
+  };
   elements?: string[];
   style?: {
     background?: string;
@@ -385,10 +488,11 @@ function Panel({ section, compact = false }: { section: Section; compact?: boole
   const background = section.style?.background || "#0f1726";
   const borderClass = borderToClass(section.style?.border);
   const radiusClass = radiusToClass(section.style?.radius);
+  const importanceClass = importanceToClass(section.position?.importance, compact);
 
   return (
     <section
-      className={radiusClass + " " + borderClass + " p-5 shadow-xl shadow-black/20"}
+      className={radiusClass + " " + borderClass + " " + importanceClass + " shadow-xl shadow-black/20"}
       style={{ backgroundColor: background }}
     >
       <div className="mb-4 flex items-center justify-between gap-4">
@@ -479,4 +583,20 @@ function radiusToClass(radius?: string) {
   }
 
   return "rounded-xl";
+}
+
+function importanceToClass(importance?: string, compact?: boolean) {
+  if (compact) {
+    return "p-4";
+  }
+
+  if (importance === "primary") {
+    return "p-6 xl:col-span-2";
+  }
+
+  if (importance === "utility") {
+    return "p-4";
+  }
+
+  return "p-5";
 }

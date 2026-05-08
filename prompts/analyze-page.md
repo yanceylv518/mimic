@@ -29,6 +29,11 @@ Describe the page structure, visual hierarchy, layout, colors, spacing, typograp
     "width": null,
     "height": null
   },
+  "layout": {
+    "type": "dashboard | landing-page | document | unknown",
+    "columns": ["260px", "1fr", "300px"],
+    "density": "compact | medium | spacious"
+  },
   "sections": [
     {
       "id": "hero",
@@ -36,6 +41,14 @@ Describe the page structure, visual hierarchy, layout, colors, spacing, typograp
       "title": "Visible section heading or concise inferred title",
       "description": "One sentence describing the section's visual role",
       "layout": "centered | two-column | grid | sidebar | stacked | unknown",
+      "position": {
+        "region": "left | top | main | right | bottom | overlay",
+        "order": 1,
+        "width": "260px | 300px | fluid | full",
+        "height": "auto | fixed | full",
+        "importance": "primary | secondary | utility",
+        "density": "compact | medium | spacious"
+      },
       "elements": ["visible label, component, or text fragment"],
       "style": {
         "background": "#ffffff",
@@ -74,6 +87,11 @@ For each section:
 
 - `title` should be the visible heading when readable; otherwise use a concise inferred title.
 - `description` should explain what the section does visually and functionally.
+- `position.region` should describe where the section lives in the page: left navigation, top toolbar, main content, right rail, bottom, or overlay.
+- `position.order` should reflect visual order inside that region.
+- `position.importance` should identify whether the section is the primary focal area, secondary content, or utility chrome.
+- `layout.columns` should approximate the major page grid. For dashboards, infer left/main/right column sizes when visible.
+- `layout.density` should describe the overall UI density.
 - `elements` should include concrete labels such as button names, navigation item names, card labels, status names, metric labels, and visible headings whenever possible.
 - Only include visible text when it is readable. If OCR confidence is low, use a semantic element name such as "navigation item", "metric label", or "primary action".
 - `style.background` and `style.foreground` should use approximate hex colors.

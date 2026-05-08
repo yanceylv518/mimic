@@ -1,7 +1,17 @@
 export const pageAnalysisJsonSchema = {
   type: "object",
   additionalProperties: false,
-  required: ["schemaVersion", "pageId", "pageType", "summary", "viewport", "sections", "theme", "notes"],
+  required: [
+    "schemaVersion",
+    "pageId",
+    "pageType",
+    "summary",
+    "viewport",
+    "layout",
+    "sections",
+    "theme",
+    "notes"
+  ],
   properties: {
     schemaVersion: {
       type: "number"
@@ -28,12 +38,40 @@ export const pageAnalysisJsonSchema = {
         }
       }
     },
+    layout: {
+      type: "object",
+      additionalProperties: false,
+      required: ["type", "columns", "density"],
+      properties: {
+        type: {
+          type: "string"
+        },
+        columns: {
+          type: "array",
+          items: {
+            type: "string"
+          }
+        },
+        density: {
+          type: "string"
+        }
+      }
+    },
     sections: {
       type: "array",
       items: {
         type: "object",
         additionalProperties: false,
-        required: ["id", "type", "title", "description", "layout", "elements", "style"],
+        required: [
+          "id",
+          "type",
+          "title",
+          "description",
+          "layout",
+          "position",
+          "elements",
+          "style"
+        ],
         properties: {
           id: {
             type: "string"
@@ -49,6 +87,31 @@ export const pageAnalysisJsonSchema = {
           },
           layout: {
             type: "string"
+          },
+          position: {
+            type: "object",
+            additionalProperties: false,
+            required: ["region", "order", "width", "height", "importance", "density"],
+            properties: {
+              region: {
+                type: "string"
+              },
+              order: {
+                type: "number"
+              },
+              width: {
+                type: "string"
+              },
+              height: {
+                type: "string"
+              },
+              importance: {
+                type: "string"
+              },
+              density: {
+                type: "string"
+              }
+            }
           },
           elements: {
             type: "array",
