@@ -39,7 +39,7 @@ MVP1 excludes:
 | 3 | CLI base commands | Done | CLI entry, image input handling, generated page folder |
 | 4 | Page analysis prompt and `analysis.json` | Done | Stable analysis schema and generated analysis file |
 | 5 | Generate React page from `analysis.json` | Done | `page.tsx` and synced preview page |
-| 6 | Local preview and MVP1 handoff | Next | Full screenshot-to-preview flow and README for generated result |
+| 6 | Local preview and MVP1 handoff | Done | Full screenshot-to-preview flow and README for generated result |
 
 ## Step 1: Project Skeleton
 
@@ -354,7 +354,27 @@ generated/page-001/
 
 ### Current Result
 
-Next.
+Done.
+
+Commit:
+
+```text
+b6d23fc Add MVP1 handoff documentation
+```
+
+Verification:
+
+```bash
+npm run preview:build
+npm run preview:check
+npm run mvp1:status
+```
+
+Handoff:
+
+- `docs/MVP1_HANDOFF.md`
+- `docs/MVP1_HANDOFF.zh-CN.md`
+- `generated/page-002/README.md`
 
 ## Update Rule
 

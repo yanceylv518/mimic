@@ -39,7 +39,7 @@ MVP1 不包含：
 | 3 | CLI 基础命令 | 已完成 | CLI 入口、图片输入处理、生成目录 |
 | 4 | 页面分析提示词与 `analysis.json` | 已完成 | 稳定的分析 schema 和分析结果文件 |
 | 5 | 根据 `analysis.json` 生成 React 页面 | 已完成 | `page.tsx` 和同步后的预览页面 |
-| 6 | 本地预览与 MVP1 交付 | 下一步 | 完整的截图到预览流程，以及生成结果说明 |
+| 6 | 本地预览与 MVP1 交付 | 已完成 | 完整的截图到预览流程，以及生成结果说明 |
 
 ## Step 1：项目骨架
 
@@ -354,7 +354,27 @@ generated/page-001/
 
 ### 当前结果
 
-下一步。
+已完成。
+
+提交：
+
+```text
+b6d23fc Add MVP1 handoff documentation
+```
+
+验证：
+
+```bash
+npm run preview:build
+npm run preview:check
+npm run mvp1:status
+```
+
+交付文档：
+
+- `docs/MVP1_HANDOFF.md`
+- `docs/MVP1_HANDOFF.zh-CN.md`
+- `generated/page-002/README.md`
 
 ## 更新规则
 

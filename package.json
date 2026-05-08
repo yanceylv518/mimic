@@ -10,6 +10,7 @@
     "cli": "node src/cli.mjs",
     "generate": "node src/cli.mjs generate",
     "mvp1:status": "node scripts/status.mjs",
+    "preview:check": "node scripts/preview-check.mjs",
     "preview:dev": "npm --prefix preview run dev",
     "preview:build": "npm --prefix preview run build",
     "render": "node src/cli.mjs render"
