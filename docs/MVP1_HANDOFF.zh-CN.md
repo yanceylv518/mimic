@@ -1,16 +1,22 @@
 # MVP1 交付说明
 
-MVP1 是一个本地优先的“截图到预览”流程。它证明项目已经可以创建页面任务、绑定分析数据、生成 React + Tailwind 代码，并在本地预览结果。
+MVP1 已完成本地“截图到预览”的基本闭环：
 
-## 当前已验证页面
+```text
+截图任务目录
+→ analysis.json
+→ page.tsx
+→ 本地预览
+→ 视觉验证报告
+```
 
-当前验证对象是：
+## 当前验证对象
 
 ```text
 generated/page-002/
 ```
 
-它包含：
+该目录本地包含：
 
 ```text
 screenshot.png
@@ -20,70 +26,45 @@ page.tsx
 README.md
 ```
 
-`page-001` 只是极小测试图片生成的冒烟测试任务。`page-002` 才是用户提供截图对应的任务。
+这些生成产物不会提交到远程仓库。
 
-## 运行 MVP1 流程
-
-在仓库根目录运行：
+## 运行流程
 
 ```bash
 npm run cli -- check
-npm run generate -- --image input/screenshot.png
-npm run analyze -- --page page-002 --analysis examples/page-analysis.example.json
+npm run analyze:auto -- --page page-002
 npm run render -- --page page-002
 npm run preview:build
 npm run preview:dev
 ```
 
-然后打开：
+打开：
 
 ```text
 http://127.0.0.1:5174/
 ```
 
-检查预览服务是否可访问：
+检查预览：
 
 ```bash
 npm run preview:check
 ```
 
-## MVP1 证明了什么
+生成视觉验证报告：
 
-- 截图可以被登记成一个生成页面任务。
-- 每个页面任务可以保存截图、metadata、analysis 和生成代码。
-- `analysis.json` 可以被校验，并作为 React 页面生成的输入。
-- 生成的 React + Tailwind 代码可以同步到预览应用。
-- 预览应用可以在本地构建和运行。
+```bash
+npm run validate:visual -- --page page-002
+```
 
-## 重要限制
-
-MVP1 默认流程仍不自动理解截图。
-
-当前 `page-002` 的演示 `analysis.json` 来自：
+报告位置：
 
 ```text
-examples/page-analysis.example.json
+validation/page-002/report.md
 ```
 
-这个文件是演示分析数据。里面的布局、颜色、间距、字体风格都是人工写好的占位内容，不是从截图中自动提取的。
+## 环境变量
 
-## Step 4B：自动视觉分析
-
-Step 4B 已新增可选的自动视觉分析命令。它已经实现，但真实调用需要配置 `OPENAI_API_KEY`。
-
-干跑检查：
-
-```bash
-npm run analyze:auto -- --page page-002 --dry-run
-```
-
-真实 API 调用：
-
-```bash
-npm run analyze:auto -- --page page-002
-```
-
-先填写本地 `.env`：
+本地 `.env`：
 
 ```text
 OPENAI_API_KEY=your_api_key
@@ -91,10 +72,27 @@ OPENAI_BASE_URL=https://api.openai.com/v1
 PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 ```
 
+`.env` 不会提交到 git。
+
+## 当前能力
+
+- 能登记截图任务。
+- 能调用视觉模型生成结构化 `analysis.json`。
+- 能识别 dashboard 的左栏、顶栏、主内容、右侧栏。
+- 能保留部分真实中文文案。
+- 能生成 React + Tailwind 预览页面。
+- 能生成本地视觉验证报告。
+
+## 当前限制
+
+- 还不是像素级复刻。
+- 规则渲染器仍偏模板化。
+- 视觉验证报告目前是人工对比，不是自动评分。
+- 还没有多轮修改能力。
+- 还没有组件沉淀能力。
+
 ## 下一步建议
 
-进入 MVP2 前，可以先选择一个方向：
+建议进入 **Step 5B：模型生成 TSX**。
 
-1. 使用真实 API key 跑 Step 4B，并检查生成的 `analysis.json`。
-2. 增强 Step 5：让当前规则生成器能从 schema 生成更丰富的页面。
-3. 开始 MVP2：围绕现有 CLI 流程搭建本地 Web 工作台。
+也就是让代码模型基于 `analysis.json` 直接生成更接近截图的 React + Tailwind 页面，而不是只依赖当前规则渲染器。

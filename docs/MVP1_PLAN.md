@@ -39,6 +39,8 @@ MVP1 excludes:
 | 3 | CLI base commands | Done | CLI entry, image input handling, generated page folder |
 | 4 | Page analysis prompt and `analysis.json` | Done | Stable analysis schema and generated analysis file |
 | 4B | Automatic vision analysis | Implemented, API run pending | `analyze:auto` command using OpenAI Responses API |
+| 4C | Layout positioning | Done | Page layout columns and section position metadata |
+| 4D | Visual validation report | Done | Playwright screenshot capture and local comparison report |
 | 5 | Generate React page from `analysis.json` | Done | `page.tsx` and synced preview page |
 | 6 | Local preview and MVP1 handoff | Done | Full screenshot-to-preview flow and README for generated result |
 
@@ -330,6 +332,67 @@ Notes:
 - `.env` is loaded automatically from the repository root and is not committed.
 - `OPENAI_BASE_URL` can point to a compatible API endpoint. The default is `https://api.openai.com/v1`.
 - The default can be changed without code edits.
+
+## Step 4C: Layout Positioning
+
+### Objective
+
+Capture page-level layout and section-level placement so the generated page can better match screenshot structure.
+
+### Current Result
+
+Done.
+
+Output:
+
+```text
+analysis.layout
+section.position
+```
+
+Verification:
+
+```bash
+npm run analyze:auto -- --page page-002
+npm run render -- --page page-002
+npm run preview:build
+```
+
+Notes:
+
+- The current dashboard analysis includes columns like `260px / 1fr / 320px`.
+- Sections now identify regions such as `left`, `top`, `main`, and `right`.
+
+## Step 4D: Visual Validation Report
+
+### Objective
+
+Capture the generated preview as an image and place it next to the original screenshot for manual review.
+
+### Current Result
+
+Done.
+
+Output:
+
+```text
+scripts/visual-compare.mjs
+validation/page-002/report.md
+validation/page-002/source-screenshot.png
+validation/page-002/generated-preview.png
+```
+
+Verification:
+
+```bash
+npm run validate:visual -- --page page-002
+```
+
+Notes:
+
+- `validation/` is local-only and ignored by git.
+- The current report captured 0 console errors.
+- This is a manual comparison report, not a pixel-level similarity score.
 
 ## Step 5: Generate React Page From `analysis.json`
 

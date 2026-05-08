@@ -12,3 +12,4 @@ generated/*
 !generated/.gitkeep
 input/*
 !input/.gitkeep
+validation/

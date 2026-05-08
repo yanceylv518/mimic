@@ -14,9 +14,13 @@
     "preview:check": "node scripts/preview-check.mjs",
     "preview:dev": "npm --prefix preview run dev",
     "preview:build": "npm --prefix preview run build",
-    "render": "node src/cli.mjs render"
+    "render": "node src/cli.mjs render",
+    "validate:visual": "node scripts/visual-compare.mjs"
   },
   "engines": {
     "node": ">=20"
+  },
+  "devDependencies": {
+    "playwright": "^1.59.1"
   }
 }
