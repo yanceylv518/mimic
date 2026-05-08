@@ -22,12 +22,14 @@ export async function analyzeAutoCommand(args) {
   const promptPath = path.join(root, "prompts", "analyze-page.md");
   const prompt = await readFile(promptPath, "utf8");
   const model = options.model ?? process.env.PAGE_MIMIC_OPENAI_MODEL ?? "gpt-4.1-mini";
+  const baseUrl = normalizeBaseUrl(process.env.OPENAI_BASE_URL ?? "https://api.openai.com/v1");
 
   if (options.dryRun) {
     console.log("Auto analysis dry run passed.");
     console.log(`- Page: ${options.page}`);
     console.log(`- Screenshot: ${path.relative(root, screenshotPath).replaceAll("\\", "/")}`);
     console.log(`- Model: ${model}`);
+    console.log(`- Base URL: ${baseUrl}`);
     console.log("- No API request was sent.");
     return;
   }
@@ -42,6 +44,7 @@ export async function analyzeAutoCommand(args) {
 
   const analysis = await analyzeScreenshotWithOpenAI({
     apiKey,
+    baseUrl,
     model,
     pageId: options.page,
     prompt,
@@ -60,6 +63,7 @@ export async function analyzeAutoCommand(args) {
 
   console.log(`Auto analysis written: ${path.relative(root, analysisPath).replaceAll("\\", "/")}`);
   console.log(`- Model: ${model}`);
+  console.log(`- Base URL: ${baseUrl}`);
 }
 
 function parseArgs(args) {
@@ -150,4 +154,8 @@ async function updateMetadata(pageDir, details) {
   };
 
   await writeFile(metadataPath, `${JSON.stringify(nextMetadata, null, 2)}\n`);
+}
+
+function normalizeBaseUrl(baseUrl) {
+  return baseUrl.replace(/\/+$/, "");
 }

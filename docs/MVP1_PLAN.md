@@ -319,8 +319,7 @@ npm run preview:build
 
 Pending verification:
 
-```powershell
-$env:OPENAI_API_KEY="..."
+```bash
 npm run analyze:auto -- --page page-002
 ```
 
@@ -328,6 +327,8 @@ Notes:
 
 - The command uses the OpenAI Responses API with image input and structured JSON output.
 - The default model is configured by `PAGE_MIMIC_OPENAI_MODEL`, with `gpt-4.1-mini` as the current local default.
+- `.env` is loaded automatically from the repository root and is not committed.
+- `OPENAI_BASE_URL` can point to a compatible API endpoint. The default is `https://api.openai.com/v1`.
 - The default can be changed without code edits.
 
 ## Step 5: Generate React Page From `analysis.json`

@@ -11,13 +11,14 @@ const mimeTypes = {
 
 export async function analyzeScreenshotWithOpenAI({
   apiKey,
+  baseUrl,
   model,
   pageId,
   prompt,
   screenshotPath
 }) {
   const imageUrl = await imageToDataUrl(screenshotPath);
-  const response = await fetch("https://api.openai.com/v1/responses", {
+  const response = await fetch(`${baseUrl}/responses`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,

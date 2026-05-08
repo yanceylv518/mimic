@@ -79,15 +79,16 @@ npm run analyze:auto -- --page page-002 --dry-run
 
 Real API run:
 
-```powershell
-$env:OPENAI_API_KEY="..."
+```bash
 npm run analyze:auto -- --page page-002
 ```
 
-Optional model override:
+Fill local `.env` first:
 
-```powershell
-$env:PAGE_MIMIC_OPENAI_MODEL="gpt-4.1-mini"
+```text
+OPENAI_API_KEY=your_api_key
+OPENAI_BASE_URL=https://api.openai.com/v1
+PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 ```
 
 ## Next Recommended Work

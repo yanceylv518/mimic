@@ -1,3 +1,4 @@
+import { loadEnvFile } from "./lib/env.mjs";
 import { analyzeCommand } from "./commands/analyze.mjs";
 import { analyzeAutoCommand } from "./commands/analyze-auto.mjs";
 import { checkCommand } from "./commands/check.mjs";
@@ -6,6 +7,8 @@ import { renderCommand } from "./commands/render.mjs";
 
 const command = process.argv[2] ?? "help";
 const args = process.argv.slice(3);
+
+await loadEnvFile();
 
 const commands = {
   analyze: analyzeCommand,

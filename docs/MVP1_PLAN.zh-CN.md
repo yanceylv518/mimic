@@ -95,16 +95,19 @@ npm run preview:build
 
 配置真实 API key 后运行：
 
-```powershell
-$env:OPENAI_API_KEY="..."
+```bash
 npm run analyze:auto -- --page page-002
 ```
 
-可选模型覆盖：
+先填写仓库根目录的 `.env`：
 
-```powershell
-$env:PAGE_MIMIC_OPENAI_MODEL="gpt-4.1-mini"
+```text
+OPENAI_API_KEY=your_api_key
+OPENAI_BASE_URL=https://api.openai.com/v1
+PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 ```
+
+`.env` 会自动加载，并且不会提交到 git。`OPENAI_BASE_URL` 可以指向兼容的 API 地址。
 
 ### 当前结果
 
