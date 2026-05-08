@@ -4,6 +4,7 @@ dist/
 .env
 .env.*
 *.log
+*.tsbuildinfo
 
 # Generated runtime outputs can contain user screenshots and large artifacts.
 generated/*

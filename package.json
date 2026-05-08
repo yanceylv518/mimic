@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "check": "node scripts/check.mjs",
-    "mvp1:status": "node scripts/status.mjs"
+    "mvp1:status": "node scripts/status.mjs",
+    "preview:dev": "npm --prefix preview run dev",
+    "preview:build": "npm --prefix preview run build"
   },
   "engines": {
     "node": ">=20"
