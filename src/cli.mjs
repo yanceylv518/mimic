@@ -1,6 +1,7 @@
 import { analyzeCommand } from "./commands/analyze.mjs";
 import { checkCommand } from "./commands/check.mjs";
 import { generateCommand } from "./commands/generate.mjs";
+import { renderCommand } from "./commands/render.mjs";
 
 const command = process.argv[2] ?? "help";
 const args = process.argv.slice(3);
@@ -9,6 +10,7 @@ const commands = {
   analyze: analyzeCommand,
   check: checkCommand,
   generate: generateCommand,
+  render: renderCommand,
   help: helpCommand
 };
 
@@ -35,10 +37,12 @@ Usage:
   npm run analyze -- --page page-001 --template
   npm run cli -- check
   npm run generate -- --image input/screenshot.png
+  npm run render -- --page page-001
 
 Commands:
   analyze     Write analysis.json for a generated page.
   check       Verify required project paths.
   generate    Create a generated page folder from one screenshot.
+  render      Generate React page code from analysis.json.
 `);
 }

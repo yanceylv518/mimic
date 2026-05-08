@@ -1,64 +1,29 @@
-const sectionLabels: Record<string, string> = {
-  "navigation": "Navigation",
-  "hero": "Hero",
+const sectionLabels = {
+  navigation: "Navigation",
+  hero: "Hero",
   "feature-grid": "Features",
-  "pricing": "Pricing",
-  "footer": "Footer",
-  "content": "Content",
-  "sidebar": "Sidebar"
+  pricing: "Pricing",
+  footer: "Footer",
+  content: "Content",
+  sidebar: "Sidebar"
 };
 
-const sections = [
-  {
-    "id": "header",
-    "type": "navigation",
-    "layout": "horizontal",
-    "elements": [
-      "brand",
-      "nav-links",
-      "primary-action"
-    ],
-    "style": {
-      "background": "#ffffff",
-      "spacing": "medium"
-    }
-  },
-  {
-    "id": "hero",
-    "type": "hero",
-    "layout": "centered",
-    "elements": [
-      "eyebrow",
-      "headline",
-      "paragraph",
-      "cta-group"
-    ],
-    "style": {
-      "background": "#f8fafc",
-      "spacing": "large"
-    }
-  },
-  {
-    "id": "features",
-    "type": "feature-grid",
-    "layout": "three-column",
-    "elements": [
-      "feature-card",
-      "feature-card",
-      "feature-card"
-    ],
-    "style": {
-      "background": "#ffffff",
-      "spacing": "large"
-    }
-  }
-];
+export function generateReactPage(analysis) {
+  const theme = normalizeTheme(analysis.theme);
+  const sections =
+    analysis.sections.length > 0 ? analysis.sections : [fallbackSection(analysis.pageType)];
+
+  return `const sectionLabels: Record<string, string> = ${JSON.stringify(sectionLabels, null, 2)};
+
+const sections = ${JSON.stringify(sections, null, 2)};
 
 export default function GeneratedPage() {
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-950">
+    <main className="${pageClass(theme)}">
       <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-6 py-8 sm:px-8 lg:px-10">
-        <PageHeader pageType="landing-page" summary="A simple marketing landing page with a top navigation, centered hero, primary call to action, and feature cards." />
+        <PageHeader pageType="${escapeAttribute(analysis.pageType)}" summary="${escapeAttribute(
+          analysis.summary || "Generated from page analysis"
+        )}" />
         <div className="mt-10 flex flex-col gap-8">
           {sections.map((section) => (
             <SectionBlock key={section.id} section={section} />
@@ -121,7 +86,7 @@ function SectionBlock({ section }: { section: Section }) {
           {elements.length > 0 ? (
             elements.map((element, index) => (
               <div
-                key={`${section.id}-${element}-${index}`}
+                key={\`\${section.id}-\${element}-\${index}\`}
                 className="rounded-lg border border-slate-200 bg-white/80 px-4 py-3 text-sm font-medium text-slate-700"
               >
                 {element}
@@ -140,4 +105,43 @@ function SectionBlock({ section }: { section: Section }) {
 
 function sectionLabel(section: Section) {
   return sectionLabels[section.type as keyof typeof sectionLabels] || section.id || "Section";
+}
+`;
+}
+
+function normalizeTheme(theme) {
+  return {
+    colors: Array.isArray(theme?.colors) ? theme.colors : [],
+    spacing: theme?.spacing || "",
+    radius: theme?.radius || "",
+    fontStyle: theme?.fontStyle || ""
+  };
+}
+
+function pageClass(theme) {
+  const hasDarkText = theme.colors.includes("#0f172a") || theme.colors.includes("#111827");
+  return hasDarkText
+    ? "min-h-screen bg-slate-50 text-slate-950"
+    : "min-h-screen bg-white text-slate-950";
+}
+
+function fallbackSection(pageType) {
+  return {
+    id: "content",
+    type: "content",
+    layout: "stacked",
+    elements: [pageType || "unknown"],
+    style: {
+      background: "#ffffff",
+      spacing: "medium"
+    }
+  };
+}
+
+function escapeAttribute(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
 }

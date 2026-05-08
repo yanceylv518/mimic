@@ -38,8 +38,8 @@ MVP1 不包含：
 | 2 | React + Tailwind 预览项目 | 已完成 | `preview/` 下的 Vite 预览应用，本地预览端口 `5174` |
 | 3 | CLI 基础命令 | 已完成 | CLI 入口、图片输入处理、生成目录 |
 | 4 | 页面分析提示词与 `analysis.json` | 已完成 | 稳定的分析 schema 和分析结果文件 |
-| 5 | 根据 `analysis.json` 生成 React 页面 | 下一步 | `page.tsx` 和同步后的预览页面 |
-| 6 | 本地预览与 MVP1 交付 | 待开始 | 完整的截图到预览流程，以及生成结果说明 |
+| 5 | 根据 `analysis.json` 生成 React 页面 | 已完成 | `page.tsx` 和同步后的预览页面 |
+| 6 | 本地预览与 MVP1 交付 | 下一步 | 完整的截图到预览流程，以及生成结果说明 |
 
 ## Step 1：项目骨架
 
@@ -301,7 +301,26 @@ preview/
 
 ### 当前结果
 
-下一步。
+已完成。
+
+提交：
+
+```text
+9f011b1 Add analysis based page renderer
+```
+
+验证：
+
+```bash
+npm run render -- --page page-002
+npm run preview:build
+```
+
+备注：
+
+- 这一步证明有效的 `analysis.json` 可以转换为可运行的 React + Tailwind 代码。
+- 当前 `page-002` 的渲染结果基于演示 analysis JSON，不是从截图中自动视觉提取出来的。
+- 生成页面已同步到 `preview/src/generated/Page.tsx`，用于本地预览。
 
 ## Step 6：本地预览与 MVP1 交付
 
@@ -335,7 +354,7 @@ generated/page-001/
 
 ### 当前结果
 
-待开始。
+下一步。
 
 ## 更新规则
 

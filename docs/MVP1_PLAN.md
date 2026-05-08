@@ -38,8 +38,8 @@ MVP1 excludes:
 | 2 | React + Tailwind preview app | Done | Vite preview app at `preview/`, local preview on port `5174` |
 | 3 | CLI base commands | Done | CLI entry, image input handling, generated page folder |
 | 4 | Page analysis prompt and `analysis.json` | Done | Stable analysis schema and generated analysis file |
-| 5 | Generate React page from `analysis.json` | Next | `page.tsx` and synced preview page |
-| 6 | Local preview and MVP1 handoff | Pending | Full screenshot-to-preview flow and README for generated result |
+| 5 | Generate React page from `analysis.json` | Done | `page.tsx` and synced preview page |
+| 6 | Local preview and MVP1 handoff | Next | Full screenshot-to-preview flow and README for generated result |
 
 ## Step 1: Project Skeleton
 
@@ -181,7 +181,7 @@ Done.
 Commit:
 
 ```text
-b068ee3 Add CLI base generation command
+a841630 Add CLI base generation command
 ```
 
 Verification:
@@ -301,7 +301,26 @@ preview/
 
 ### Current Result
 
-Next.
+Done.
+
+Commit:
+
+```text
+9f011b1 Add analysis based page renderer
+```
+
+Verification:
+
+```bash
+npm run render -- --page page-002
+npm run preview:build
+```
+
+Notes:
+
+- This step proves that a valid `analysis.json` can be converted into runnable React + Tailwind code.
+- The current `page-002` render is based on the demo analysis JSON, not automatic visual extraction from the screenshot.
+- The generated page is synced to `preview/src/generated/Page.tsx` for local preview.
 
 ## Step 6: Local Preview And MVP1 Handoff
 
@@ -335,7 +354,7 @@ generated/page-001/
 
 ### Current Result
 
-Pending.
+Next.
 
 ## Update Rule
 
