@@ -17,6 +17,7 @@ body {
 
 button,
 select,
+input,
 textarea {
   font: inherit;
 }
@@ -115,6 +116,7 @@ button:disabled {
 }
 
 select,
+input,
 textarea {
   background: #07101f;
   border: 1px solid rgba(148, 163, 184, 0.24);
@@ -177,6 +179,19 @@ h3 {
   display: flex;
   gap: 12px;
   margin-top: 12px;
+}
+
+.helper {
+  color: #91a3bf;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.upload-row {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
 }
 
 .iterations {

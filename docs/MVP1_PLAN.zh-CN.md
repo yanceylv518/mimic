@@ -28,6 +28,7 @@
 | 5E | 优化工作流 | 已完成 | `optimize:ai` 编排验证、反馈、补丁、构建和迭代记录 |
 | 5F | 迭代接受 / 回退 | 已完成 | `iteration:accept` 与 `iteration:reject` |
 | 6A | 本地 Web UI 产品雏形 | 已完成 | `studio:dev` 提供页面、迭代和 A/B/C 操作界面 |
+| 6B | 上传截图与生成入口 | 已完成 | Studio 支持上传截图、创建任务、一键生成页面 |
 | 6 | MVP1 交付文档 | 已完成 | 中英文交付说明 |
 
 ## 关键说明
@@ -329,6 +330,7 @@ http://127.0.0.1:5180/
 当前 UI 能力：
 
 - 查看已有页面任务。
+- 上传新截图并生成新页面任务。
 - 打开当前预览页。
 - 查看原图和当前预览截图。
 - 查看迭代记录。
@@ -339,7 +341,9 @@ http://127.0.0.1:5180/
 
 ```text
 GET  /api/pages
+POST /api/pages
 GET  /api/pages/:pageId
+POST /api/pages/:pageId/generate
 POST /api/pages/:pageId/optimize
 POST /api/pages/:pageId/iterations/:iteration/accept
 POST /api/pages/:pageId/iterations/:iteration/reject
@@ -356,6 +360,45 @@ GET  /artifacts/*
 
 ## 下一步建议
 
-下一步建议进入 **Step 6B：上传截图与生成页面入口**。
+## Step 6B：上传截图与生成页面入口
 
-当前 Studio 还只能操作已有任务。下一步应在 UI 中补上“上传截图 -> 创建任务 -> 自动分析生成页面”的入口。
+Studio 新增“上传截图并生成”入口。
+
+用户操作：
+
+```text
+选择截图 -> 点击“上传并生成页面”
+```
+
+后台执行：
+
+```text
+保存上传图片
+创建 generated/page-xxx
+analyze:auto
+render:ai
+preview:build
+validate:visual
+刷新 Studio 状态
+```
+
+新增 workflow：
+
+```text
+src/workflows/create-page-workflow.mjs
+src/workflows/generate-page-workflow.mjs
+```
+
+当前验收：
+
+- 上传图片保存逻辑通过临时目录测试。
+- 创建任务 workflow 可以生成 `metadata.json`。
+- 生成 workflow dry-run 可以通过 `analyze:auto` 和 `render:ai`。
+- Studio 页面能看到上传区域。
+- Studio API 仍能返回已有页面列表。
+
+## 下一步建议
+
+下一步建议进入 **Step 6C：生成进度与错误展示**。
+
+当前“上传并生成页面”是一个长请求。下一步应该把它拆成可观察任务状态，至少在 UI 中展示当前执行到分析、渲染、构建还是验证，以及失败原因。

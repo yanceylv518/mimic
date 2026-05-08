@@ -101,6 +101,8 @@ Then visit:
 http://127.0.0.1:5180/
 ```
 
+Studio can also upload a screenshot and run the generation workflow from the UI.
+
 ## What MVP1 Proves
 
 - A screenshot can be registered as a generated page task.
@@ -113,6 +115,7 @@ http://127.0.0.1:5180/
 - A workflow function can orchestrate one optimization round with `optimize:ai`.
 - Iteration results can be accepted or rejected with explicit decision records.
 - A local Studio can operate existing page tasks without manual command chaining.
+- Studio can upload a screenshot and trigger the generation workflow.
 - The preview app builds and runs locally.
 
 ## Important Limitation
@@ -125,7 +128,7 @@ AI patching is intentionally single-step. It applies one controlled TSX rewrite,
 
 Optimization workflows are recorded locally. Accept/reject commands now sync the chosen TSX and write `decision.json`.
 
-Studio currently works with existing page tasks only. Uploading a new screenshot from the UI is not implemented yet.
+Upload generation is currently a long request. Progress and error states are still basic.
 
 ## Step 4B: Automatic Visual Analysis
 
@@ -153,6 +156,6 @@ PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 
 Before moving to MVP2, choose one of these:
 
-1. Start Step 6B: upload screenshot and generate-page entry points in Studio.
+1. Start Step 6C: progress and error display for generation and optimization jobs.
 2. Improve the generation prompt for better dashboard spacing, table density, and sidebar fidelity.
 3. Start MVP2: real project export and reusable component extraction.

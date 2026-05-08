@@ -48,6 +48,7 @@ MVP1 excludes:
 | 5E | Optimization workflow | Done | `optimize:ai` orchestrates validation, feedback, patching, build, and iteration logs |
 | 5F | Iteration accept/reject | Done | `iteration:accept` and `iteration:reject` commands |
 | 6A | Local Web Studio | Done | `studio:dev` UI for existing pages and A/B/C iteration actions |
+| 6B | Upload and generate entry | Done | Studio can upload a screenshot, create a task, and run generation workflow |
 | 6 | Local preview and MVP1 handoff | Done | Full screenshot-to-preview flow and README for generated result |
 
 ## Step 1: Project Skeleton
@@ -714,6 +715,7 @@ http://127.0.0.1:5180/
 Current UI:
 
 - Page task selector.
+- Upload screenshot and generate page.
 - Preview link.
 - Source and generated screenshot viewer.
 - Iteration history.
@@ -724,7 +726,9 @@ Current API:
 
 ```text
 GET  /api/pages
+POST /api/pages
 GET  /api/pages/:pageId
+POST /api/pages/:pageId/generate
 POST /api/pages/:pageId/optimize
 POST /api/pages/:pageId/iterations/:iteration/accept
 POST /api/pages/:pageId/iterations/:iteration/reject
@@ -740,9 +744,51 @@ Invoke-WebRequest http://127.0.0.1:5180/api/pages/page-002
 
 Notes:
 
-- Studio operates on existing generated page tasks.
-- Uploading a new screenshot from the UI is not implemented yet.
-- The next step should add upload and generate-page entry points.
+- Studio can now create new page tasks from uploaded screenshots.
+- Upload generation is currently a long request.
+- The next step should improve progress reporting for long generation requests.
+
+## Step 6B: Upload And Generate Entry
+
+### Objective
+
+Let Studio create a new page task from an uploaded screenshot and run the existing generation workflow.
+
+### Current Result
+
+Done.
+
+New workflows:
+
+```text
+src/workflows/create-page-workflow.mjs
+src/workflows/generate-page-workflow.mjs
+```
+
+UI flow:
+
+```text
+Choose screenshot -> Upload and generate page
+```
+
+Backend flow:
+
+```text
+save uploaded image
+create generated/page-xxx
+analyze:auto
+render:ai
+preview:build
+validate:visual
+refresh Studio state
+```
+
+Verification:
+
+```bash
+node -e "import('./src/workflows/create-page-workflow.mjs')"
+node -e "import('./src/workflows/generate-page-workflow.mjs')"
+```
 
 ## Update Rule
 

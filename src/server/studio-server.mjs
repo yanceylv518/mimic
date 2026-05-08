@@ -2,6 +2,9 @@ import { createReadStream } from "node:fs";
 import { mkdir, readdir, readFile, stat } from "node:fs/promises";
 import http from "node:http";
 import path from "node:path";
+import { loadEnvFile } from "../lib/env.mjs";
+import { createPageFromImageWorkflow, saveUploadedImageWorkflow } from "../workflows/create-page-workflow.mjs";
+import { generatePageWorkflow } from "../workflows/generate-page-workflow.mjs";
 import { acceptIterationWorkflow, rejectIterationWorkflow } from "../workflows/iteration-decision-workflow.mjs";
 import { optimizePageWorkflow } from "../workflows/optimize-page-workflow.mjs";
 
@@ -25,7 +28,35 @@ async function handleRequest(request, response) {
     const url = new URL(request.url ?? "/", `http://${request.headers.host ?? `${host}:${port}`}`);
 
     if (url.pathname === "/api/pages") {
-      await sendJson(response, await listPages());
+      if (request.method === "GET") {
+        await sendJson(response, await listPages());
+        return;
+      }
+
+      if (request.method === "POST") {
+        const body = await readJsonBody(request);
+        const upload = await saveUploadedImageWorkflow({
+          dataUrl: body.dataUrl,
+          fileName: body.fileName
+        });
+        const result = await createPageFromImageWorkflow({
+          imagePath: upload.imagePath,
+          pageId: body.pageId
+        });
+        await sendJson(response, result, 201);
+        return;
+      }
+    }
+
+    const generateMatch = url.pathname.match(/^\/api\/pages\/([^/]+)\/generate$/);
+    if (generateMatch && request.method === "POST") {
+      const body = await readJsonBody(request);
+      const result = await generatePageWorkflow({
+        debug: Boolean(body.debug),
+        model: body.model,
+        page: generateMatch[1]
+      });
+      await sendJson(response, result);
       return;
     }
 
@@ -277,6 +308,7 @@ function contentType(filePath) {
   return types[extension] ?? "application/octet-stream";
 }
 
+await loadEnvFile();
 await mkdir(studioDir, { recursive: true });
 
 if (import.meta.url === `file:///${process.argv[1]?.replaceAll("\\", "/")}`) {

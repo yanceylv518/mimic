@@ -11,9 +11,11 @@ const elements = {
   pageId: document.querySelector("#pageId"),
   pageTitle: document.querySelector("#pageTitle"),
   refreshButton: document.querySelector("#refreshButton"),
+  screenshotInput: document.querySelector("#screenshotInput"),
   sourceImage: document.querySelector("#sourceImage"),
   statusPill: document.querySelector("#statusPill")
 };
+elements.uploadButton = document.querySelector("#uploadButton");
 
 elements.refreshButton.addEventListener("click", () => refresh());
 elements.pageId.addEventListener("change", () => {
@@ -21,6 +23,7 @@ elements.pageId.addEventListener("change", () => {
   refreshPage();
 });
 elements.optimizeButton.addEventListener("click", () => optimize());
+elements.uploadButton.addEventListener("click", () => uploadAndGenerate());
 
 await bootstrap();
 
@@ -35,6 +38,15 @@ async function bootstrap() {
 }
 
 async function refresh() {
+  const payload = await fetchJson("/api/pages");
+  const selected = state.pageId;
+  elements.pageId.innerHTML = payload.pages
+    .map((page) => `<option value="${escapeHtml(page.pageId)}">${escapeHtml(page.pageId)}</option>`)
+    .join("");
+  state.pageId = payload.pages.some((page) => page.pageId === selected)
+    ? selected
+    : payload.pages.at(-1)?.pageId ?? "";
+  elements.pageId.value = state.pageId;
   await refreshPage();
 }
 
@@ -64,6 +76,38 @@ async function optimize() {
       method: "POST"
     });
   }, "正在优化，这可能需要几分钟...");
+}
+
+async function uploadAndGenerate() {
+  const file = elements.screenshotInput.files?.[0];
+
+  if (!file) {
+    elements.actionStatus.textContent = "请选择一张截图";
+    return;
+  }
+
+  await runAction(async () => {
+    const dataUrl = await readFileAsDataUrl(file);
+    const created = await fetchJson("/api/pages", {
+      body: JSON.stringify({
+        dataUrl,
+        fileName: file.name
+      }),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "POST"
+    });
+    state.pageId = created.pageId;
+    await fetchJson(`/api/pages/${created.pageId}/generate`, {
+      body: JSON.stringify({}),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "POST"
+    });
+    await refresh();
+  }, "正在上传并生成页面，这可能需要几分钟...");
 }
 
 async function accept(iteration) {
@@ -171,10 +215,20 @@ function renderIterations(iterations) {
 function setBusy(isBusy, text = "") {
   elements.optimizeButton.disabled = isBusy;
   elements.refreshButton.disabled = isBusy;
+  elements.uploadButton.disabled = isBusy;
   for (const button of elements.iterations.querySelectorAll("button")) {
     button.disabled = isBusy;
   }
   elements.actionStatus.textContent = text;
+}
+
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => resolve(reader.result));
+    reader.addEventListener("error", () => reject(reader.error));
+    reader.readAsDataURL(file);
+  });
 }
 
 async function fetchJson(url, options) {
