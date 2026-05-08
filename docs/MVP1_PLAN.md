@@ -36,8 +36,8 @@ MVP1 excludes:
 | --- | --- | --- | --- |
 | 1 | Project skeleton | Done | Root package, base folders, prompt placeholders, check scripts |
 | 2 | React + Tailwind preview app | Done | Vite preview app at `preview/`, local preview on port `5174` |
-| 3 | CLI base commands | Next | CLI entry, image input handling, generated page folder |
-| 4 | Page analysis prompt and `analysis.json` | Pending | Stable analysis schema and generated analysis file |
+| 3 | CLI base commands | Done | CLI entry, image input handling, generated page folder |
+| 4 | Page analysis prompt and `analysis.json` | Next | Stable analysis schema and generated analysis file |
 | 5 | Generate React page from `analysis.json` | Pending | `page.tsx` and synced preview page |
 | 6 | Local preview and MVP1 handoff | Pending | Full screenshot-to-preview flow and README for generated result |
 
@@ -176,7 +176,20 @@ generated/
 
 ### Current Result
 
-Next.
+Done.
+
+Commit:
+
+```text
+b068ee3 Add CLI base generation command
+```
+
+Verification:
+
+```bash
+npm run cli -- check
+npm run generate -- --image input/screenshot.png
+```
 
 ## Step 4: Page Analysis Prompt And `analysis.json`
 
@@ -224,7 +237,7 @@ prompts/
 
 ### Current Result
 
-Pending.
+Next.
 
 ## Step 5: Generate React Page From `analysis.json`
 
