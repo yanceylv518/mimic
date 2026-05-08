@@ -25,6 +25,7 @@
 | 5B | 模型生成 TSX | 已完成 | `render:ai` 根据 `analysis.json` 生成页面代码 |
 | 5C | AI 视觉反馈 | 已完成 | `feedback:ai` 对比原图和预览图并输出修正建议 |
 | 5D | AI 页面补丁 | 已完成 | `patch:ai` 根据视觉反馈修正当前 TSX |
+| 5E | 优化工作流 | 已完成 | `optimize:ai` 编排验证、反馈、补丁、构建和迭代记录 |
 | 6 | MVP1 交付文档 | 已完成 | 中英文交付说明 |
 
 ## 关键说明
@@ -117,6 +118,7 @@ npm run preview:check
 npm run validate:visual -- --page page-002
 npm run feedback:ai -- --page page-002
 npm run patch:ai -- --page page-002
+npm run optimize:ai -- --page page-002 --max-rounds 1 --note "页面应该左右结构，撑满页面"
 ```
 
 ## Step 5B：模型生成 TSX
@@ -226,6 +228,54 @@ npm run validate:visual -- --page page-002
 
 ## 下一步建议
 
-下一步建议进入 **Step 5E：补丁前后对比与迭代记录**。
+## Step 5E：优化工作流
 
-现在系统已经能“生成页面 -> 对比反馈 -> 应用补丁”。Step 5E 应该把每轮补丁的反馈、前后截图、构建结果记录成一个迭代日志，方便后续多轮微调和人工回看。
+运行：
+
+```bash
+npm run optimize:ai -- --page page-002 --max-rounds 1 --note "页面应该左右结构，撑满页面"
+```
+
+这一步会自动执行：
+
+```text
+validate:visual
+feedback:ai
+patch:ai
+preview:build
+validate:visual
+```
+
+同时生成：
+
+```text
+validation/page-002/iterations/iteration-001/
+  before.png
+  after.png
+  feedback.md
+  note.txt
+  before.tsx
+  after.tsx
+  report-before.md
+  report-after.md
+  01-validate-before.log
+  02-feedback.log
+  03-patch.log
+  04-build.log
+  05-validate-after.log
+  result.json
+```
+
+当前验收：
+
+- `optimize:ai --dry-run` 可以验证参数和本地页面。
+- `optimize:ai` 可以跑完一轮真实优化。
+- 每轮都有独立 iteration 目录。
+- 每轮记录用户 `--note`、前后截图、前后 TSX、模型反馈、构建日志和结果 JSON。
+- workflow 函数位于 `src/workflows/`，后续 Web UI 可以直接调用。
+
+## 下一步建议
+
+下一步建议进入 **Step 5F：迭代接受 / 回退命令**。
+
+现在系统可以自动产出多轮优化结果，但还缺少产品化的“接受这一轮”和“回退到上一轮”命令。

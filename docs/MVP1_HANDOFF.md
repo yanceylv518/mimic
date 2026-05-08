@@ -37,6 +37,7 @@ npm run preview:dev
 npm run validate:visual -- --page page-002
 npm run feedback:ai -- --page page-002
 npm run patch:ai -- --page page-002
+npm run optimize:ai -- --page page-002 --max-rounds 1 --note "页面应该左右结构，撑满页面"
 ```
 
 Then open:
@@ -66,6 +67,18 @@ npm run preview:build
 npm run validate:visual -- --page page-002
 ```
 
+Run one product-style optimization workflow:
+
+```bash
+npm run optimize:ai -- --page page-002 --max-rounds 1 --note "页面应该左右结构，撑满页面"
+```
+
+Iteration artifacts:
+
+```text
+validation/page-002/iterations/iteration-*/
+```
+
 ## What MVP1 Proves
 
 - A screenshot can be registered as a generated page task.
@@ -75,6 +88,7 @@ npm run validate:visual -- --page page-002
 - A code model can generate TSX from `analysis.json` with `render:ai`.
 - A vision model can compare source and preview screenshots with `feedback:ai`.
 - A code model can apply one controlled TSX patch with `patch:ai`.
+- A workflow function can orchestrate one optimization round with `optimize:ai`.
 - The preview app builds and runs locally.
 
 ## Important Limitation
@@ -84,6 +98,8 @@ MVP1 is now a working local loop, but it is not a pixel-level recreation system 
 The current visual validation report is still a manual comparison aid. It captures the source screenshot, generated preview screenshot, console errors, and a checklist, but it does not score similarity automatically.
 
 AI patching is intentionally single-step. It applies one controlled TSX rewrite, then the developer should build and validate before running another iteration.
+
+Optimization workflows are recorded locally, but accept/reject commands are not implemented yet.
 
 ## Step 4B: Automatic Visual Analysis
 
@@ -111,6 +127,6 @@ PAGE_MIMIC_OPENAI_MODEL=gpt-4.1-mini
 
 Before moving to MVP2, choose one of these:
 
-1. Add Step 5E: patch iteration logs with before/after screenshots and command results.
+1. Add Step 5F: accept/reject commands for iteration results.
 2. Improve the generation prompt for better dashboard spacing, table density, and sidebar fidelity.
 3. Start MVP2: build a local web studio UI around the existing CLI flow.

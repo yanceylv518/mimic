@@ -37,6 +37,7 @@ export async function patchAiCommand(args) {
     console.log(`- Base URL: ${baseUrl}`);
     console.log(`- Feedback: ${path.relative(root, feedbackPath).replaceAll("\\", "/")}`);
     console.log(`- Current TSX bytes: ${Buffer.byteLength(currentPageSource, "utf8")}`);
+    console.log(`- Note: ${options.note || "(none)"}`);
     console.log(`- Sections: ${analysis.sections.length}`);
     console.log("- No API request was sent.");
     return;
@@ -56,6 +57,9 @@ export async function patchAiCommand(args) {
     model,
     userText: [
       "Improve this generated page using the visual feedback.",
+      "",
+      "## Human Note",
+      options.note || "No additional human note.",
       "",
       "## Visual Feedback",
       feedback,
@@ -112,6 +116,12 @@ function parseArgs(args) {
 
     if (arg === "--debug") {
       options.debug = true;
+      continue;
+    }
+
+    if (arg === "--note") {
+      options.note = next;
+      index += 1;
       continue;
     }
 

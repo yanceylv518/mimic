@@ -45,6 +45,7 @@ MVP1 excludes:
 | 5B | AI page rendering | Done | `render:ai` command that generates TSX from `analysis.json` |
 | 5C | AI visual feedback | Done | `feedback:ai` compares source and generated screenshots |
 | 5D | AI page patch | Done | `patch:ai` updates TSX from visual feedback |
+| 5E | Optimization workflow | Done | `optimize:ai` orchestrates validation, feedback, patching, build, and iteration logs |
 | 6 | Local preview and MVP1 handoff | Done | Full screenshot-to-preview flow and README for generated result |
 
 ## Step 1: Project Skeleton
@@ -603,6 +604,51 @@ Notes:
 - `patch:ai` backs up the previous TSX before writing the new version.
 - This is a single-patch loop, not a fully automated multi-iteration agent yet.
 - The next step should record patch iterations so multi-round edits remain traceable.
+
+## Step 5E: Optimization Workflow
+
+### Objective
+
+Wrap the individual commands into a workflow function that can later be called by a product backend or Web UI.
+
+### Current Result
+
+Done.
+
+Verification:
+
+```bash
+npm run optimize:ai -- --page page-002 --max-rounds 1 --note "页面应该左右结构，撑满页面" --dry-run
+npm run optimize:ai -- --page page-002 --max-rounds 1 --note "页面应该左右结构，撑满页面"
+npm run preview:build
+```
+
+Outputs:
+
+```text
+validation/page-002/iterations/iteration-*/
+  before.png
+  after.png
+  feedback.md
+  note.txt
+  before.tsx
+  after.tsx
+  report-before.md
+  report-after.md
+  01-validate-before.log
+  02-feedback.log
+  03-patch.log
+  04-build.log
+  05-validate-after.log
+  result.json
+```
+
+Notes:
+
+- CLI is now a test entry for `optimizePageWorkflow()`.
+- The workflow accepts a human `--note` for structural corrections.
+- Iteration artifacts are local and ignored by git.
+- The next step should add accept/reject commands for iteration results.
 
 ## Update Rule
 
